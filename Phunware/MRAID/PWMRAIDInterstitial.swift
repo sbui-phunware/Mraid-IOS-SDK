@@ -144,13 +144,15 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         
         let closeButton = UIButton(frame:buttonRect)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
- 
         
-        closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
-        closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
-        closeButton.setTitle("X", for:UIControlState.normal)
-        closeButton.titleLabel!.textAlignment = NSTextAlignment.center
-        closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
+        let custom = mraidHandler.getExpandProperties()?.useCustomClose
+        if(custom != nil && custom == false){
+            closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
+            closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
+            closeButton.setTitle("X", for:UIControlState.normal)
+            closeButton.titleLabel!.textAlignment = NSTextAlignment.center
+            closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
+        }
         closeButton.addTarget(self, action: action, for:UIControlEvents.touchUpInside)
         
         view.addSubview(closeButton)
@@ -160,8 +162,8 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         } else {
             NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor)])
         }
-//
-//        NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: view.topAnchor)])
+        //
+        //        NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: view.topAnchor)])
         NSLayoutConstraint.activate([closeButton.rightAnchor.constraint(equalTo: view.rightAnchor)])
     }
     

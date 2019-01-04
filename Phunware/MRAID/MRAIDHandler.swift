@@ -262,6 +262,10 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
         
     }
     
+    public func getExpandProperties() -> ExpandProperties? {
+        return expandProperties;
+    }
+    
     /** ------------------------------------------------------------------------
      Invoke MRAID js functions
      ------------------------------------------------------------------------ */
@@ -365,9 +369,13 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
             if(expandProperties?.useCustomClose != true){
                 addCloseButton(to:activeWebView, action:#selector(onCloseExpandedClicked), showButton:expandProperties?.useCustomClose ?? true)
             }
-            setMRAIDState(States.EXPANDED)
-            setMRAIDCurrentPosition(parentVC!.view.frame)
-            setMRAIDSizeChanged(to:parentVC!.view.frame.size);
+            // give the webview a little bit of time to resize before informing the ad of the change
+            // to avoid some potential bugs
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.025) { // change 2 to desired number of seconds
+                self.setMRAIDCurrentPosition(self.parentVC!.view.frame)
+                self.setMRAIDSizeChanged(to:self.parentVC!.view.frame.size);
+                self.setMRAIDState(States.EXPANDED)
+            }
         }
     }
     
@@ -459,9 +467,15 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
             }
             mraidDelegate!.resize(to:resizeProperties!)
             addCloseButton(to:activeWebView, action:#selector(onCloseResizeClicked), showButton:false, position:resizeProperties?.customClosePosition ?? "top-right")
-            setMRAIDSizeChanged(to:CGSize(width:resizeProperties!.width!, height:resizeProperties!.height!))
+            // give the webview a little bit of time to resize before informing the ad of the change
+            // to avoid some potential bugs
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.025) { // change 2 to desired number of seconds
+                self.setMRAIDSizeChanged(to:CGSize(width:self.resizeProperties!.width!, height:self.resizeProperties!.height!))
+                self.setMRAIDState(States.RESIZED)
+            }
+        }else {
+            setMRAIDState(States.RESIZED)
         }
-        setMRAIDState(States.RESIZED)
     }
     
     private func setOrientationProperties(_ args:String?){
