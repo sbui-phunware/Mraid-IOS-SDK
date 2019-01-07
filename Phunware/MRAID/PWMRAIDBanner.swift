@@ -66,6 +66,12 @@ public class PWMRAIDBanner: UIViewController, MRAIDDelegate {
         initWebView()
     }
     
+    public override var prefersStatusBarHidden: Bool {
+        get {
+            return true
+        }
+    }
+    
     private func initWebView(){
         mraidHandler = MRAIDHandler()
         mraidHandler.respectsSafeArea = respectSafeArea
@@ -168,7 +174,7 @@ public class PWMRAIDBanner: UIViewController, MRAIDDelegate {
             if(mraidHandler.respectsSafeArea){
                 if #available(iOS 11.0, *) {
                     let guide = parentController.view.safeAreaLayoutGuide
-                    NSLayoutConstraint.activate([view.bottomAnchor.constraintEqualToSystemSpacingBelow(guide.bottomAnchor, multiplier: 1.0)])
+                    NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0)])
                 } else {
                     NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: parentController.bottomLayoutGuide.topAnchor, constant: standardSpacing)])
                 }
@@ -320,8 +326,9 @@ public class PWMRAIDBanner: UIViewController, MRAIDDelegate {
         view.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
         view.removeConstraints(view.constraints)
         setInitialConstraints()
-        mraidHandler.setCurrentPosition(view.frame)
-        mraidHandler.setMRAIDSizeChanged(to: fullScreenSize)
+        // handled in mraidHandler
+//        mraidHandler.setCurrentPosition(view.frame)
+//        mraidHandler.setMRAIDSizeChanged(to: fullScreenSize)
     }
     
     //  ---------------------------------------
