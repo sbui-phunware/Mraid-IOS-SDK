@@ -1,21 +1,28 @@
 
 phunware-ios-mraid-sdk v0.9 - end user
-Requirements
+
+
+Requirements:
 ●	iOS 10.1+
 ●	Xcode 8.1+
 ●	Swift 4.1
-Installation
-CocoaPods
+
+Installation:
+
+●CocoaPods
 To integrate phunware-ios-mraid-sdk into your Xcode project using CocoaPods, 
 Update with instructions
-Carthage
+
+●Carthage
 To integrate phunware-ios-mraid-sdk into your Xcode project using Carthage,  
 Update with instructions
-Manually
+
+●Manually
 Installation of phunware-ios-sdk can be done manually by building and copying the framework into your project.
 Usage
 
-Banners:
+●Banners:
+
 Banners will be displayed immediately once they are returned from Phunware’s ad server.  
 
 The response functions are included in a closure passed to the placement request.
@@ -29,7 +36,7 @@ Retrieving a banner:
 
 Width and height are optional here.  Most of the time the width and height will come from the zone in your Phunware configuration but if that is not set, you may want to set a fallback here.
 
-let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:320, height:50, customExtras:nil)
+    let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:320, height:50, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
@@ -51,9 +58,9 @@ let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:320
             }
         }
 
+   
 
-
-Interstitials:
+●Interstitials:
 Your view controller  will need to implement the PWInterstitialDelegate interface to retrieve event information.
 
 These methods are:
@@ -76,8 +83,8 @@ These methods are:
 
 
 Retrieving an interstitial:
-
-let config = PlacementRequestConfig(accountId: 174812, zoneId: 335348, width:nil, height:nil, customExtras:nil)
+  
+    let config = PlacementRequestConfig(accountId: 174812, zoneId: 335348, width:nil, height:nil, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
@@ -105,10 +112,14 @@ PWInterstitial(placement, parentViewController, delegate, respectSafeAreaLayoutG
 
 Once retrieved, the interstitialReady function will be called.  After this point you can display the interstitial at any time with:
 
+
+
 interstitial.display();
 
 The interstitial can only been displayed once, after which you must retrieve another one.
-Sample Projects
+
+●Sample Projects:
+
 Please check out the Swift Sample and ObjC Sample projects inside this repository to see more sample code about how to use this SDK.
 License
 This SDK is released under the Apache 2.0 license. See LICENSE for more information.
