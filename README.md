@@ -21,9 +21,7 @@ Update with instructions
 Installation of phunware-ios-sdk can be done manually by building and copying the framework into your project.
 Usage
 
-●Banners:
-
-Banners will be displayed immediately once they are returned from Phunware’s ad server.  
+●Banners: Banners will be displayed immediately once they are returned from Phunware’s ad server.  
 
 The response functions are included in a closure passed to the placement request.
 
@@ -32,7 +30,7 @@ Creating a banner with PWBanner(placement, parentViewController, position)
 -	parentViewController (This is the containing controller that should house the banner.  Typically this will be the view controller doing the banner request)
 -	position (A string constant noting where the banner should appear on screen.  Positions values can be found in Phunware.MRAIDConstants)
 
-Retrieving a banner:
+●Retrieving a banner:
 
 Width and height are optional here.  Most of the time the width and height will come from the zone in your Phunware configuration but if that is not set, you may want to set a fallback here.
 
@@ -82,7 +80,7 @@ These methods are:
     }
 
 
-Retrieving an interstitial:
+●Retrieving an interstitial:
   
     let config = PlacementRequestConfig(accountId: 174812, zoneId: 335348, width:nil, height:nil, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
@@ -103,7 +101,7 @@ Retrieving an interstitial:
         }
 
 
-Creating an interstitial with 
+●Creating an interstitial with 
 PWInterstitial(placement, parentViewController, delegate, respectSafeAreaLayoutGuide)
 -	placement (as with banners, currently only one placement will be returned from Phunware)
 -	parentViewController (The view controller which will contain the interstitial, typically the same controller that retrieves the interstitial placement)
@@ -112,9 +110,7 @@ PWInterstitial(placement, parentViewController, delegate, respectSafeAreaLayoutG
 
 Once retrieved, the interstitialReady function will be called.  After this point you can display the interstitial at any time with:
 
-
-
-interstitial.display();
+    interstitial.display();
 
 The interstitial can only been displayed once, after which you must retrieve another one.
 
