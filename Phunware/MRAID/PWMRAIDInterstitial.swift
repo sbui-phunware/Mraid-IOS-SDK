@@ -192,7 +192,11 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         if(mraidHandler.state == States.RESIZED){
             close()
         }
-        coordinator.animate(alongsideTransition: { (_) in }, completion: { _ in self.mraidHandler.setMRAIDSizeChanged(to:self.view.frame.size) })
-        mraidView.evaluateJavaScript(js, completionHandler: nil)
+        self.mraidHandler.setMRAIDScreenSize(size)
+        self.mraidHandler.setCurrentPosition(CGRect(x:0, y:0, width:size.width, height:size.height))
+        coordinator.animate(alongsideTransition: { (_) in }, completion: { _ in
+            self.mraidView.evaluateJavaScript(js, completionHandler: nil)
+            self.mraidHandler.setMRAIDSizeChanged(to:size)
+        })
     }
 }
