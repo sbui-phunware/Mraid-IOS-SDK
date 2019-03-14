@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */; };
 		BE89B0EF21C86FD500923CED /* Phunware.h in Headers */ = {isa = PBXBuildFile; fileRef = BEBE2571207C1DE600D7C655 /* Phunware.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE89B0F021C86FD500923CED /* Phunware.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBE2573207C1DE600D7C655 /* Phunware.swift */; };
 		BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6792A521517937009A1409 /* PWBanner.swift */; };
@@ -47,6 +48,7 @@
 		BE1F7957210F9D2700CE032E /* PWMRAIDBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWMRAIDBanner.swift; sourceTree = "<group>"; };
 		BE34453A211CB18600422393 /* MRAIDConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDConstants.swift; sourceTree = "<group>"; };
 		BE34453C21248F9500422393 /* PWVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVideoPlayer.swift; sourceTree = "<group>"; };
+		BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTVideo.swift; sourceTree = "<group>"; };
 		BE3BC00B215EC1C00018BF74 /* PWInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWInterstitial.swift; sourceTree = "<group>"; };
 		BE41D8FE211122BF001B017F /* MRAIDUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDUtilities.swift; sourceTree = "<group>"; };
 		BE41D90021124E2C001B017F /* MRAIDBrowserWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDBrowserWindow.swift; sourceTree = "<group>"; };
@@ -129,6 +131,14 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		BE3B73E42229A2AB00F06A13 /* VAST */ = {
+			isa = PBXGroup;
+			children = (
+				BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */,
+			);
+			path = VAST;
+			sourceTree = "<group>";
+		};
 		BE67929C21431EF7009A1409 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +179,7 @@
 		BEBE2556207C1D5E00D7C655 /* Phunware */ = {
 			isa = PBXGroup;
 			children = (
+				BE3B73E42229A2AB00F06A13 /* VAST */,
 				BE67929C21431EF7009A1409 /* Assets */,
 				BE9FF3DF210932A70010AED8 /* MRAID */,
 				BEEE527620C7016A002E6B13 /* Protocols */,
@@ -287,6 +298,7 @@
 				BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */,
 				BE89B10121C86FEC00923CED /* PWInterstitialDelegate.swift in Sources */,
 				BE89B0F021C86FD500923CED /* Phunware.swift in Sources */,
+				BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */,
 				BE89B10921C86FEC00923CED /* RequestManager.swift in Sources */,
 				BE89B10C21C86FEC00923CED /* PWInterstitialView.swift in Sources */,
 				BE89B0F321C86FD500923CED /* PWErrorCode.swift in Sources */,

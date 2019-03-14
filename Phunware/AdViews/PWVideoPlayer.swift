@@ -14,9 +14,11 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     private var constraints:[NSLayoutConstraint]? = []
     private var onClose:() -> Void = {}
     let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
-    public func playVideo(_ url:URL, onClose:@escaping () -> Void){
+    
+    public func initialize(onClose:@escaping () -> Void){
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
+        config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.init(rawValue: 0)
         self.onClose = onClose
         videoView = WKWebView(frame:fullScreenSize, configuration:config)
         view.autoresizesSubviews = true
@@ -25,8 +27,23 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         videoView!.uiDelegate = self
         addCloseButton()
         view.addSubview(videoView!)
+    }
+    
+    public override var prefersStatusBarHidden: Bool {
+        get {
+            return true
+        }
+    }
+    
+    public func playVideo(_ url:URL, onClose:@escaping () -> Void){
+        self.initialize(onClose:onClose);
         let request:URLRequest = URLRequest(url:url)
         videoView!.load(request)
+    }
+    
+    public func playHTMLVideo(_ body:String, onClose:@escaping() -> Void){
+        self.initialize(onClose:onClose)
+        videoView!.loadHTMLString(body, baseURL:nil)
     }
     
     public func addCloseButton(){

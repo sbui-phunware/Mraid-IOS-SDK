@@ -31,7 +31,7 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
     var fadeDirection:CGFloat = -1.0
     var fadeAmountPerTick:CGFloat?
     
-    enum ABInterstitialError: Error {
+    enum PWInterstitialError: Error {
         case MISSING_PARENT_VIEWCONTROLLER
     }
     
