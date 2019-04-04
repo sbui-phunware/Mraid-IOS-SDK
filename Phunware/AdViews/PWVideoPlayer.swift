@@ -13,18 +13,22 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     private var videoView:WKWebView?
     private var constraints:[NSLayoutConstraint]? = []
     private var onClose:() -> Void = {}
+    private var originalRootController:UIViewController!
     let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
     
     public func initialize(onClose:@escaping () -> Void){
+        self.originalRootController = UIApplication.shared.delegate?.window??.rootViewController
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.init(rawValue: 0)
         self.onClose = onClose
         videoView = WKWebView(frame:fullScreenSize, configuration:config)
         view.autoresizesSubviews = true
+        view.isUserInteractionEnabled = true
         view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
         videoView!.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
         videoView!.uiDelegate = self
+        videoView!.navigationDelegate = self
         addCloseButton()
         view.addSubview(videoView!)
     }
@@ -33,6 +37,30 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         get {
             return true
         }
+    }
+    
+    private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        // Capture window.open (clickthroughs) and redirect
+        webView.load(navigationAction.request)
+        return nil
+    }
+    
+    /* Handle HTTP requests from the webview */
+    public func webView(_ webView: WKWebView,
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url?.absoluteString
+        if(url != nil && url != "about:blank"){
+            let browser = MRAIDBrowserWindow()
+            browser.initialize()
+            browser.loadUrl(url!)
+            browser.onClose(perform:{() in
+                MRAIDUtilities.setRootController(self.originalRootController!)
+            })
+            MRAIDUtilities.setRootController(browser)
+        }
+        decisionHandler(.allow)
+        return
     }
     
     public func playVideo(_ url:URL, onClose:@escaping () -> Void){

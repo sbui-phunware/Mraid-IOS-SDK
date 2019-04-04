@@ -314,5 +314,10 @@ public class MRAIDUtilities {
         }
         task.resume()
     }
+    
+    internal static func setRootController(_ controller:UIViewController){
+        UIApplication.shared.delegate?.window??.addSubview(controller.view)
+        UIApplication.shared.delegate?.window??.rootViewController = controller
+    }
 }
 

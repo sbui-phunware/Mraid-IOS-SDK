@@ -374,9 +374,9 @@ public class PWMRAIDBanner: UIViewController, MRAIDDelegate {
         browser.initialize()
         browser.loadUrl(url)
         browser.onClose(perform:{() in
-            self.setRootController(self.originalRootController!)
+            MRAIDUtilities.setRootController(self.originalRootController!)
         })
-        setRootController(browser)
+        MRAIDUtilities.setRootController(browser)
         self.placement!.recordClick()
     }
     
