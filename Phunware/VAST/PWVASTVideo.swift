@@ -88,15 +88,12 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
         let videoPlayer = PWVideoPlayer()
         let body = self.getVideoJSMarkup()
         let previousRootController = UIApplication.shared.delegate?.window??.rootViewController
-        self.setRootController(videoPlayer)
+        MRAIDUtilities.setRootController(videoPlayer)
         videoPlayer.playHTMLVideo(body, onClose: {() in
-            self.setRootController(previousRootController!)
+            MRAIDUtilities.setRootController(previousRootController!)
             videoPlayer.dismiss(animated:false, completion:nil)
         })
     }
     
-    private func setRootController(_ controller:UIViewController){
-        UIApplication.shared.delegate?.window??.addSubview(controller.view)
-        UIApplication.shared.delegate?.window??.rootViewController = controller
-    }
+
 }

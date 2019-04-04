@@ -41,14 +41,6 @@ class ViewController: UIViewController, PWInterstitialDelegate {
         self.interstitial.display()
     }
     
-    @IBAction func onClickVAST(_ sender: Any){
-        let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
-        let video = PWVASTVideo()
-        video.initialize(rect:fullScreenSize, accountID:174812, zoneID:6459, publisherID:61936)
-        video.play()
-    }
-    
-    
     @IBAction func onClickBanner(_ sender: Any) {
         let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:nil, height:nil, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in

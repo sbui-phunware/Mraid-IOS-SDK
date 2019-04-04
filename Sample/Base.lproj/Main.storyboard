@@ -27,7 +27,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H5-gW-oWX">
-                                <rect key="frame" x="148" y="206" width="78" height="30"/>
+                                <rect key="frame" x="148" y="173" width="78" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Get Banner"/>
                                 <connections>
@@ -43,14 +43,6 @@
                                 </state>
                                 <connections>
                                     <action selector="displayInterstitial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k4h-B1-lnt"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9I-SV-EZm">
-                                <rect key="frame" x="133" y="167" width="110" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Get VAST Video"/>
-                                <connections>
-                                    <action selector="onClickVAST:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8X1-Zy-MOa"/>
                                 </connections>
                             </button>
                         </subviews>
