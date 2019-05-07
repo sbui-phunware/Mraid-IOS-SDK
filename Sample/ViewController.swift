@@ -8,7 +8,8 @@
 import UIKit
 import Phunware
 
-class ViewController: UIViewController, PWInterstitialDelegate {
+class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
+    
 
     var banner: PWBanner!
     var interstitial: PWInterstitial!
@@ -24,7 +25,6 @@ class ViewController: UIViewController, PWInterstitialDelegate {
                 guard placements.count == 1 else {
                     return
                 }
-                
                 guard placements[0].isValid else {
                     return
                 }
@@ -65,22 +65,93 @@ class ViewController: UIViewController, PWInterstitialDelegate {
         }
     }
     
+    @IBAction func onClickVAST(_ sender: Any){
+        let vast = PWVASTVideo()
+        vast.initialize(accountID: 174812, zoneID:6792, publisherID:61936, delegate:self)
+        vast.play()
+    }
+    
     
     func interstitialReady(_ interstitial: PWInterstitial) {
         //interstitial.display()
-        print("ready");
+        print("ready")
     }
     
     func interstitialFailedToLoad(_ interstitial: PWInterstitial) {
-        print("failed");
+        print("failed")
     }
     
     func interstitialClosed(_ interstitial: PWInterstitial) {
-        print("close");
+        print("close")
     }
     
     func interstitialStartLoad(_ interstitial: PWInterstitial) {
-        print("start load");
+        print("start load")
     }
+    
+    func onMute() {
+        print("mute")
+    }
+    
+    func onUnmute() {
+        print("unmute")
+    }
+    
+    func onPause() {
+        print("pause")
+    }
+    
+    func onResume() {
+        print("resume")
+    }
+    
+    func onRewind() {
+        print("rewind")
+    }
+    
+    func onSkip() {
+        print("skip")
+    }
+    
+    func onPlayerExpand() {
+        print("playerExpand")
+    }
+    
+    func onPlayerCollapse() {
+        print("playerCollapse")
+    }
+    
+    func onNotUsed() {
+        print("notUsed")
+    }
+    
+    func onLoaded() {
+        print("loaded")
+    }
+    
+    func onStart() {
+        print("start")
+    }
+    
+    func onFirstQuartile() {
+        print("firstQuartile")
+    }
+    
+    func onMidpoint() {
+        print("midpoint")
+    }
+    
+    func onThirdQuartile() {
+        print("thirdQuartile")
+    }
+    
+    func onComplete() {
+        print("complete")
+    }
+    
+    func onCloseLinear() {
+        print("closeLinear")
+    }
+    
 }
 

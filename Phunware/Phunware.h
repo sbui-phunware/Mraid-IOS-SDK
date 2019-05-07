@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double PhunwareVersionNumber;
 FOUNDATION_EXPORT const unsigned char PhunwareVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Phunware/PublicHeader.h>
-
-

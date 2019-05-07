@@ -45,6 +45,14 @@
                                     <action selector="displayInterstitial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="k4h-B1-lnt"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbx-8H-j4F">
+                                <rect key="frame" x="132" y="211" width="110" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Get VAST Video"/>
+                                <connections>
+                                    <action selector="onClickVAST:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ccX-0m-JIb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
