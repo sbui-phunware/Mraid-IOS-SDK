@@ -10,8 +10,8 @@ import Phunware
 
 class ViewController: UIViewController, PWInterstitialDelegate {
 
-    var banner: PWBanner!
-    var interstitial: PWInterstitial!
+    var banner: PWBanner?
+    var interstitial: PWInterstitial?
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -38,7 +38,7 @@ class ViewController: UIViewController, PWInterstitialDelegate {
     }
     
     @IBAction func displayInterstitial(_ sender: Any){
-        self.interstitial.display()
+        self.interstitial?.display()
     }
     
     @IBAction func onClickBanner(_ sender: Any) {
@@ -54,6 +54,7 @@ class ViewController: UIViewController, PWInterstitialDelegate {
                     // error
                     return
                 }
+                self.banner?.destroy()
                 self.banner = PWBanner(placement:placements[0], parentViewController:self, position:Positions.BOTTOM_CENTER)
             case .badRequest(let statusCode, let responseBody):
                 return

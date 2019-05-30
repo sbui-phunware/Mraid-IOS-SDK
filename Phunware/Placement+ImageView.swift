@@ -29,11 +29,10 @@ public extension Placement {
                 return
             }
             
-            let image = UIImage(data: data)
-            let imageView = PWImageView(image: image)
-            imageView.placement = self
-            
             DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                let imageView = PWImageView(image: image)
+                imageView.placement = self
                 complete(imageView)
                 imageView.setupGestures()
             }
