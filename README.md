@@ -30,6 +30,10 @@ Creating a banner with PWBanner(placement, parentViewController, position)
 -	parentViewController (This is the containing controller that should house the banner.  Typically this will be the view controller doing the banner request)
 -	position (A string constant noting where the banner should appear on screen.  Positions values can be found in Phunware.MRAIDConstants)
 
+Banners should be destroyed when you want to get a new one, or just when you want it off screen.
+
+The PWBanner.destroy() instance method will remove the banner from your view.  
+
 ●Retrieving a banner:
 
 Width and height are optional here.  Most of the time the width and height will come from the zone in your Phunware configuration but if that is not set, you may want to set a fallback here.
@@ -46,6 +50,7 @@ Width and height are optional here.  Most of the time the width and height will 
                     // error
                     return
                 }
+                self.banner?.destroy()
                 self.banner = PWBanner(placement:placements[0], parentViewController:self, position:Positions.BOTTOM_CENTER)
             case .badRequest(let statusCode, let responseBody):
                 return
