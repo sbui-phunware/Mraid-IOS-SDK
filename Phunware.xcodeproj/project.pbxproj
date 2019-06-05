@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */; };
+		BE69690B227B651500381273 /* PWVASTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE69690A227B651500381273 /* PWVASTParser.swift */; };
 		BE89B0EF21C86FD500923CED /* Phunware.h in Headers */ = {isa = PBXBuildFile; fileRef = BEBE2571207C1DE600D7C655 /* Phunware.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE89B0F021C86FD500923CED /* Phunware.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBE2573207C1DE600D7C655 /* Phunware.swift */; };
 		BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6792A521517937009A1409 /* PWBanner.swift */; };
@@ -41,7 +42,9 @@
 		BE89B10F21C86FEC00923CED /* UIDevice+AdButler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBE2570207C1DE600D7C655 /* UIDevice+AdButler.swift */; };
 		BE89B11021C86FEC00923CED /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBE2572207C1DE600D7C655 /* UIDeviceExtensions.swift */; };
 		BE89B11121C86FEC00923CED /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6792A3215176E6009A1409 /* StringExtensions.swift */; };
+		BE92E5FB225E80BE0050BC3B /* PWVASTDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */; };
 		BEA1FEB821CAC40000152B15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEA7AAD620C5DD56008E43B8 /* Assets.xcassets */; };
+		BEF4A5962277694A0078E4B3 /* PWVASTCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4A5952277694A0078E4B3 /* PWVASTCompanion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,9 +59,11 @@
 		BE6792A1215169A7009A1409 /* PWErrorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PWErrorCode.swift; sourceTree = "<group>"; };
 		BE6792A3215176E6009A1409 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		BE6792A521517937009A1409 /* PWBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWBanner.swift; sourceTree = "<group>"; };
+		BE69690A227B651500381273 /* PWVASTParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTParser.swift; sourceTree = "<group>"; };
 		BE6DEBD320D99F6F00145E64 /* PWImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWImageView.swift; sourceTree = "<group>"; };
 		BE921E6B2130753E00F49805 /* PWMRAIDInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWMRAIDInterstitial.swift; sourceTree = "<group>"; };
 		BE921E6D213082EF00F49805 /* MRAIDInterstitialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDInterstitialDelegate.swift; sourceTree = "<group>"; };
+		BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTDelegate.swift; sourceTree = "<group>"; };
 		BEA7AAD320C1E54C008E43B8 /* PWInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWInterstitialView.swift; sourceTree = "<group>"; };
 		BEA7AAD620C5DD56008E43B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Phunware/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		BEAF2A85212DF04D00865179 /* MRAIDHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDHandler.swift; sourceTree = "<group>"; };
@@ -83,6 +88,7 @@
 		BEBE257F207C1DE700D7C655 /* ResponseCollector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseCollector.swift; sourceTree = "<group>"; };
 		BEBE2581207C1DE700D7C655 /* PlacementResponseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementResponseOperation.swift; sourceTree = "<group>"; };
 		BEEE527720C701CE002E6B13 /* PWInterstitialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWInterstitialDelegate.swift; sourceTree = "<group>"; };
+		BEF4A5952277694A0078E4B3 /* PWVASTCompanion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTCompanion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */,
+				BEF4A5952277694A0078E4B3 /* PWVASTCompanion.swift */,
+				BE69690A227B651500381273 /* PWVASTParser.swift */,
 			);
 			path = VAST;
 			sourceTree = "<group>";
@@ -205,6 +213,7 @@
 		BEEE527620C7016A002E6B13 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */,
 				BEEE527720C701CE002E6B13 /* PWInterstitialDelegate.swift */,
 				BEAF2A87212DF28100865179 /* MRAIDDelegate.swift */,
 				BE921E6D213082EF00F49805 /* MRAIDInterstitialDelegate.swift */,
@@ -259,6 +268,7 @@
 				TargetAttributes = {
 					BEBE2553207C1D5E00D7C655 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
@@ -297,12 +307,15 @@
 			files = (
 				BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */,
 				BE89B10121C86FEC00923CED /* PWInterstitialDelegate.swift in Sources */,
+				BE92E5FB225E80BE0050BC3B /* PWVASTDelegate.swift in Sources */,
+				BEF4A5962277694A0078E4B3 /* PWVASTCompanion.swift in Sources */,
 				BE89B0F021C86FD500923CED /* Phunware.swift in Sources */,
 				BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */,
 				BE89B10921C86FEC00923CED /* RequestManager.swift in Sources */,
 				BE89B10C21C86FEC00923CED /* PWInterstitialView.swift in Sources */,
 				BE89B0F321C86FD500923CED /* PWErrorCode.swift in Sources */,
 				BE89B10321C86FEC00923CED /* MRAIDInterstitialDelegate.swift in Sources */,
+				BE69690B227B651500381273 /* PWVASTParser.swift in Sources */,
 				BE89B10821C86FEC00923CED /* PlacementResponseOperation.swift in Sources */,
 				BE89B10721C86FEC00923CED /* PlacementRequestOperation.swift in Sources */,
 				BE89B0FE21C86FEC00923CED /* MRAIDConstants.swift in Sources */,
@@ -459,6 +472,7 @@
 		BEBE2569207C1D5E00D7C655 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -474,17 +488,21 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = phunware.ios.mraid.sdk;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Debug;
 		};
 		BEBE256A207C1D5E00D7C655 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -500,11 +518,13 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = phunware.ios.mraid.sdk;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Release;
 		};

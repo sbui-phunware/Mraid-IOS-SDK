@@ -10,26 +10,23 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
     private var publisherID:Int!
     private var poster:String!
     private var sources:[Source]?
+    private var delegate:PWVASTDelegate?
+    private var videoPlayer:PWVideoPlayer!
+
+    
+    private let baseurl = "https://ssp-r.phunware.com"
     
     struct Source {
         public var source:String!
         public var type:String!
     }
     
-    public func initialize(rect:CGRect, accountID:Int, zoneID:Int, publisherID:Int, poster:String? = ""){
-        self.rect = rect
+    public func initialize(accountID:Int, zoneID:Int, publisherID:Int, delegate:PWVASTDelegate?, poster:String? = ""){
         self.zoneID = zoneID
         self.accountID = accountID
         self.publisherID = publisherID
         self.poster = poster
-    }
-    
-    public func initialize(webView:WKWebView, accountID:Int, zoneID:Int, publisherID:Int, poster:String? = ""){
-        self.webView = webView
-        self.zoneID = zoneID
-        self.accountID = accountID
-        self.publisherID = publisherID
-        self.poster = poster
+        self.delegate = delegate
     }
     
     public func addSource(source:String, type:String){
@@ -46,8 +43,8 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
                 <meta name="viewport" content="initial-scale=1.0" />
                 <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
                 <script src="http://vjs.zencdn.net/4.12/video.js"></script>
-                <link href="http://ssp-r.phunware.com/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css" rel="stylesheet">
-                <script src="http://ssp-r.phunware.com/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js"></script>
+                <link href="\(baseurl)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css" rel="stylesheet">
+                <script src="\(baseurl)/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js"></script>
             </head>
             <body style="margin:0px; background-color:black">
             <video id="av_video" class="video-js vjs-default-skin" playsinline="true" autoplay="true"
@@ -59,7 +56,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
         str += "data-setup='{ "
         str += "\"plugins\": { "
         str += "\"vastClient\": { "
-        str += "\"adTagUrl\": \"https://ssp-r.phunware.com/vast.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
+        str += "\"adTagUrl\": \"\(baseurl)/vasttemp.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
         str += "\"adCancelTimeout\": 5000, "
         str += "\"adsEnabled\": true "
         str += "} "
@@ -70,7 +67,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
                 str += "<source src=\"\(s.source!)\" type='\(s.type!)'/>"
             }
         }else{
-            str += "<source src=\"http://ssp-r.phunware.com/assets/blank.mp4\" type='video/mp4'/>"
+            str += "<source src=\"\(baseurl)/assets/blank.mp4\" type='video/mp4'/>"
         }
         str += """
         <p class="vjs-no-js">
@@ -85,15 +82,14 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
     }
     
     public func play(){
-        let videoPlayer = PWVideoPlayer()
+        videoPlayer = PWVideoPlayer()
+        videoPlayer.addCloseButtonToVideo = false
         let body = self.getVideoJSMarkup()
         let previousRootController = UIApplication.shared.delegate?.window??.rootViewController
         MRAIDUtilities.setRootController(videoPlayer)
-        videoPlayer.playHTMLVideo(body, onClose: {() in
+        videoPlayer.playHTMLVideo(body, delegate:self.delegate, onClose: {() in
             MRAIDUtilities.setRootController(previousRootController!)
-            videoPlayer.dismiss(animated:false, completion:nil)
+            self.videoPlayer.dismiss(animated:false, completion:nil)
         })
     }
-    
-
 }

@@ -15,7 +15,7 @@ public protocol MRAIDDelegate {
     func resize(to:ResizeProperties)
     func playVideo(_ url:String)
     
-    // AB specific
+    // PW specific
     func reportDOMSize(_ args:String?)
     func webViewLoaded()
     //func addCloseButton(to:UIView, action:Selector)
