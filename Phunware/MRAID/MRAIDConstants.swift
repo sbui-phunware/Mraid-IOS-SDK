@@ -78,6 +78,8 @@ public struct Positions {
     public static let BOTTOM_LEFT = "bottom-left"
     public static let BOTTOM_CENTER = "bottom-center"
     public static let BOTTOM_RIGHT = "bottom-right"
+    public static let CENTER_LEFT = "center-left"
+    public static let CENTER_RIGHT = "center-right"
 }
 
 internal struct PlacementTypes {

@@ -39,11 +39,13 @@ public class PWBanner: NSObject {
                 y = parentRect.height - CGFloat(placement.height)
             }
             if(position.range(of:"center") != nil){
-                x = (parentRect.width / 2) - CGFloat((placement.width / 2))
-                if(position == Positions.CENTER){
-                    y = (parentRect.height / 2) - CGFloat((placement.height / 2))
+                if(position.range(of:"left") == nil && position.range(of:"right") == nil){
+                    x = (parentRect.width / 2) - CGFloat((placement.width / 2))
                 }
+                y = (parentRect.height / 2) - CGFloat((placement.height / 2))
             }
+            
+            
             if(position.range(of:"left") != nil){
                 x = 0
             }
