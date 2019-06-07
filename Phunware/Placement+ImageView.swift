@@ -15,7 +15,7 @@ public extension Placement {
      - Parameter completionHandler: a success callback block. The block will be given a `UIImageView`.
      */
     @objc(getImageView:)
-    public func getImageView(completionHandler complete: @escaping (UIImageView) -> Void) {
+    func getImageView(completionHandler complete: @escaping (UIImageView) -> Void) {
         guard let imageUrl = imageUrl, let url = URL(string: imageUrl) else {
             return
         }

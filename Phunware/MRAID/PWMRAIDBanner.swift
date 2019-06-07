@@ -158,41 +158,53 @@ public class PWMRAIDBanner: UIViewController, MRAIDDelegate {
     private func setResizeMask(){
         let standardSpacing: CGFloat = 8.0
 
-        if(layoutPosition!.range(of:"top") != nil){
-            if(mraidHandler.respectsSafeArea){
-                if #available(iOS 11.0, *) {
-                    let guide = parentController.view.safeAreaLayoutGuide
-                    NSLayoutConstraint.activate([view.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
-                } else {
-                    NSLayoutConstraint.activate([view.topAnchor.constraint(equalTo: parentController.topLayoutGuide.bottomAnchor, constant: standardSpacing)])
-                }
-            } else{
-                NSLayoutConstraint.activate([view.topAnchor.constraint(equalTo: parentController.view.topAnchor)])
-            }
-        }
-        if(layoutPosition!.range(of:"bottom") != nil){
-            if(mraidHandler.respectsSafeArea){
-                if #available(iOS 11.0, *) {
-                    let guide = parentController.view.safeAreaLayoutGuide
-                    NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0)])
-                } else {
-                    NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: parentController.bottomLayoutGuide.topAnchor, constant: standardSpacing)])
-                }
-            } else{
-                NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: parentController.view.bottomAnchor)])
-            }
-        }
-        if(layoutPosition!.range(of:"left") != nil){
-            NSLayoutConstraint.activate([view.leftAnchor.constraint(equalTo: parentController.view.leftAnchor)])
-        }
-        if(layoutPosition!.range(of:"right") != nil){
-            NSLayoutConstraint.activate([view.rightAnchor.constraint(equalTo: parentController.view.rightAnchor)])
-        }
+        
         if(layoutPosition! == "center"){
             NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: parentController.view.centerXAnchor),
                                          view.centerYAnchor.constraint(equalTo: parentController.view.centerYAnchor)])
-        }else if(layoutPosition!.range(of:"center") != nil){
-            NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: parentController.view.centerXAnchor)])
+        }else{
+            if(layoutPosition!.range(of:"top") != nil){
+                if(mraidHandler.respectsSafeArea){
+                    if #available(iOS 11.0, *) {
+                        let guide = parentController.view.safeAreaLayoutGuide
+                        NSLayoutConstraint.activate([view.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
+                    } else {
+                        NSLayoutConstraint.activate([view.topAnchor.constraint(equalTo: parentController.topLayoutGuide.bottomAnchor, constant: standardSpacing)])
+                    }
+                } else{
+                    NSLayoutConstraint.activate([view.topAnchor.constraint(equalTo: parentController.view.topAnchor)])
+                }
+                if(layoutPosition!.range(of:"center") != nil){
+                    NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: parentController.view.centerXAnchor)])
+                }
+            }
+            if(layoutPosition!.range(of:"bottom") != nil){
+                if(mraidHandler.respectsSafeArea){
+                    if #available(iOS 11.0, *) {
+                        let guide = parentController.view.safeAreaLayoutGuide
+                        NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0)])
+                    } else {
+                        NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: parentController.bottomLayoutGuide.topAnchor, constant: standardSpacing)])
+                    }
+                } else{
+                    NSLayoutConstraint.activate([view.bottomAnchor.constraint(equalTo: parentController.view.bottomAnchor)])
+                }
+                if(layoutPosition!.range(of:"center") != nil){
+                    NSLayoutConstraint.activate([view.centerXAnchor.constraint(equalTo: parentController.view.centerXAnchor)])
+                }
+            }
+            if(layoutPosition!.range(of:"left") != nil){
+                NSLayoutConstraint.activate([view.leftAnchor.constraint(equalTo: parentController.view.leftAnchor)])
+                if(layoutPosition!.range(of:"center") != nil){
+                    NSLayoutConstraint.activate([view.centerYAnchor.constraint(equalTo: parentController.view.centerYAnchor)])
+                }
+            }
+            if(layoutPosition!.range(of:"right") != nil){
+                NSLayoutConstraint.activate([view.rightAnchor.constraint(equalTo: parentController.view.rightAnchor)])
+                if(layoutPosition!.range(of:"center") != nil){
+                    NSLayoutConstraint.activate([view.centerYAnchor.constraint(equalTo: parentController.view.centerYAnchor)])
+                }
+            }
         }
     }
     
