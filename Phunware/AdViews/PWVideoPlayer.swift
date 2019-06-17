@@ -8,7 +8,7 @@ import Foundation
 import WebKit
 
 
-public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate {
+public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate, WKScriptMessageHandler {
     private var videoView:WKWebView?
     private var constraints:[NSLayoutConstraint]? = []
     private var onClose:() -> Void = {}
@@ -25,9 +25,13 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.init(rawValue: 0)
-        
+   
         self.onClose = onClose
-        
+        let source = "document.addEventListener('click', function(){ window.webkit.messageHandlers.iosListener.postMessage('click clack!'); })"
+        let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        config.userContentController.addUserScript(script)
+        config.userContentController.add(self, name: "iosListener")
+
         videoView = WKWebView(frame:fullScreenSize, configuration:config)
         
         view.autoresizesSubviews = true
@@ -46,17 +50,27 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             return false
         }
     }
-    
-    private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        print("message: \(message.body)")
+        // and whatever other actions you want to take
+    }
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         // Capture window.open (clickthroughs) and redirect
+        print("action: \(navigationAction)")
+
         webView.load(navigationAction.request)
+        
+        
         return nil
+        
+        
     }
     
     /* Handle HTTP requests from the webview */
     public func webView(_ webView: WKWebView,
                         decidePolicyFor navigationAction: WKNavigationAction,
                         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        
         let url = navigationAction.request.url?.absoluteString
         if(url != nil && !url!.starts(with:"about:blank") && url! != "https://ssp-r.phunware.com/"){
             if (url!.range(of:"itunes.apple.com") != nil){
@@ -91,9 +105,12 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                 })
                 MRAIDUtilities.setRootController(browser)
             }
+    
         }
+    
         decisionHandler(.allow)
         return
+        
     }
     
     public func playVideo(_ url:URL, onClose:@escaping () -> Void){
@@ -120,26 +137,28 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         let closeH = CGFloat(50)
         
         let closeX = w - closeW
-        let closeY = videoView!.bounds.minY + 3
+        let closeY = videoView!.bounds.minY + 25
         let buttonRect = CGRect(x:closeX, y:closeY, width:closeW, height:closeH)
         
         let closeButton = UIButton(frame:buttonRect)
         closeButton.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-        closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
-        closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
-        closeButton.setTitle("X", for:UIControlState.normal)
+        closeButton.setTitleColor(UIColor.white, for:UIControl.State.normal)
+        closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControl.State.normal)
+        closeButton.setTitle("X", for:UIControl.State.normal)
         closeButton.titleLabel!.textAlignment = NSTextAlignment.center
-        closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
+        closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:25.0), size: 25.0)
     
-        closeButton.addTarget(self, action: #selector(close), for:UIControlEvents.touchUpInside)
+        closeButton.addTarget(self, action: #selector(close), for:UIControl.Event.touchUpInside)
         videoView!.addSubview(closeButton)
     }
     
     @objc func close(){
         videoView!.removeFromSuperview()
         videoView = nil
-        removeFromParentViewController()
+        removeFromParent()
         onClose()
+        print("Vast Video Close")
+
     }
     
     public var webView:WKWebView {
@@ -148,13 +167,18 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     public func webViewDidClose(_ webView: WKWebView) {
         NSLog("Video view closed.")
+        print("Webview Close")
+
     }
     
     public override var shouldAutorotate: Bool {
+         print("Back from webview")
         return true
+        
     }
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+         print("Back from Transition")
 
     }
     
@@ -164,12 +188,15 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         handleEndCardEvents()
         addClickThroughToEndCard()
         addCloseButton()
+        print("End Card Display")
+
     }
     
     private func addClickThroughToEndCard(){
         let tap = UITapGestureRecognizer(target: self, action: #selector (self.endCardClick (_:)))
         tap.delegate = self
         webView.addGestureRecognizer(tap)
+
     }
     
     private func handleEndCardEvents(){
@@ -189,6 +216,8 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                     // no need to do anything here
                 })
                 task.resume()
+                print("Resume Ad ")
+
             }
         }
     }
@@ -199,6 +228,8 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     @objc
     func endCardClick(_ sender:UITapGestureRecognizer){
+        print("End Card CLick ")
+
         if(endCardCompanion?.clickThrough != nil){
             if (endCardCompanion!.clickThrough!.range(of:"itunes.apple.com") != nil){
                 if let url = URL(string: endCardCompanion!.clickThrough!), UIApplication.shared.canOpenURL(URL(string:endCardCompanion!.clickThrough!)!) {
@@ -234,7 +265,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         </style>
         </script>
         </head>
-        <body style=\"background-color:black; margin:0; padding:0; font-size:0px; width:" + \(endCardCompanion!.width!) + "px; height:" + \(endCardCompanion!.height!) + "px;\">
+        <body style=\"background-color:black; scrolling:no; margin:0; padding:0; font-size:0px; width:" + \(endCardCompanion!.width!) + "px; height:" + \(endCardCompanion!.height!) + "px;\">
         </div>
         <body>
         </html>
@@ -246,15 +277,25 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         switch(event){
         case "mute":
             self.delegate?.onMute()
+            print("Player onMute")
+
         case "unmute":
             self.delegate?.onUnmute()
+            print("Player onUnmute")
+
         case "pause":
             self.delegate?.onPause()
+            print("Player pause")
+
         case "resume":
             self.delegate?.onResume()
+            print("Player resume")
+
             
         case "rewind":
             self.delegate?.onRewind()
+            print("Player rewind")
+
             
         case "skip":
             self.delegate?.onSkip()
@@ -263,29 +304,47 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             }else{
                 close()
             }
+            print("Player Ad skip")
+
         case "playerExpand":
             self.delegate?.onPlayerExpand()
+            print("Player playerExpand")
+
             
         case "playerCollapse":
             self.delegate?.onPlayerCollapse()
+            print("Player playerCollapse")
+
             
         case "notUsed":
             self.delegate?.onNotUsed()
+            print("Player notUsed")
+
             
         case "loaded":
             self.delegate?.onLoaded()
+            print("Player loaded")
+
             
         case "start":
             self.delegate?.onStart()
+            print("Player start")
+
             
         case "firstQuartile":
             self.delegate?.onFirstQuartile()
+            print("Player firstQuartile")
+
             
         case "midpoint":
             self.delegate?.onMidpoint()
+            print("Player midpoint")
+
             
         case "thirdQuartile":
             self.delegate?.onThirdQuartile()
+            print("Player thirdQuartile")
+
             
         case "complete":
             self.delegate?.onComplete()
@@ -294,8 +353,12 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             }else{
                 close()
             }
+            print("Player complete")
+
         case "closeLinear":
             self.delegate?.onCloseLinear()
+            print("Player onCloseLinear")
+
         default:
             break
         }
