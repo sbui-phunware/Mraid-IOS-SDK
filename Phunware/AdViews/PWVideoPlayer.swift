@@ -43,7 +43,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     public override var prefersStatusBarHidden: Bool {
         get {
-            return true
+            return false
         }
     }
     
