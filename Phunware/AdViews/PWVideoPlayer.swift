@@ -39,12 +39,30 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         videoView!.navigationDelegate = self
         
         view.addSubview(videoView!)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+    }
+    
+    @objc private func didBecomeActive(){
+        NSLog("did become active");
     }
     
     public override var prefersStatusBarHidden: Bool {
         get {
             return true
         }
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        NSLog("will appear - animated: " + String(animated))
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        NSLog("will disappear - animated: " + String(animated))
+    }
+    
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        NSLog("webview did finish")
     }
     
     private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -58,7 +76,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                         decidePolicyFor navigationAction: WKNavigationAction,
                         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let url = navigationAction.request.url?.absoluteString
-        if(url != nil && !url!.starts(with:"about:blank") && url! != "https://ssp-r.phunware.com/"){
+        if(url != nil && !url!.starts(with:"about:blank") && url! != "https://ssp-r.phunware.com/" && url! != "http://ssp-r.phunware.com/"){
             if (url!.range(of:"itunes.apple.com") != nil){
                 if let url = URL(string: url!), UIApplication.shared.canOpenURL(url) {
                     if #available(iOS 10, *) {
@@ -83,6 +101,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                     handleEvent(event)
                 }
             }else if (url!.range(of:"callback.spark") == nil && url!.range(of:"callback-p.spark") == nil){
+                NSLog("Requesting URL -- " + url!)
                 let browser = MRAIDBrowserWindow()
                 browser.initialize()
                 browser.loadUrl(url!)
@@ -108,7 +127,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     public func playHTMLVideo(_ body:String, delegate:PWVASTDelegate?, onClose:@escaping() -> Void){
         self.initialize(onClose:onClose)
         self.delegate = delegate
-        videoView!.loadHTMLString(body, baseURL:nil)
+        videoView!.loadHTMLString(body, baseURL:URL(string:"http://ssp-r.phunware.com/"))
         if(addCloseButtonToVideo){
             addCloseButton()
         }
@@ -139,7 +158,9 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         videoView!.removeFromSuperview()
         videoView = nil
         removeFromParentViewController()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         onClose()
+        dismiss(animated:false)
     }
     
     public var webView:WKWebView {
