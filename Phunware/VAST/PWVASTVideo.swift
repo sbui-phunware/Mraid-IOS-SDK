@@ -14,7 +14,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
     private var videoPlayer:PWVideoPlayer!
 
     
-    private let baseurl = "https://ssp-r.phunware.com"
+    private let baseurl = "http://ssp-r.phunware.com"
     
     struct Source {
         public var source:String!
@@ -42,9 +42,9 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
             <head>
                 <meta name="viewport" content="initial-scale=1.0" />
                 <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-                <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+                <script src="http://vjs.zencdn.net/4.12/video.js?v=1"></script>
                 <link href="\(baseurl)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css" rel="stylesheet">
-                <script src="\(baseurl)/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js"></script>
+                <script src="http://servedbyadbutler.com.vm.test/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js?v=5"></script>
             </head>
             <body style="margin:0px; background-color:black">
             <video id="av_video" class="video-js vjs-default-skin" playsinline="true" autoplay="true"
