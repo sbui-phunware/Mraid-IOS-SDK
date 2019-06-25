@@ -210,7 +210,6 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     // DELEGATE FUNCTIONS
     func log(_ str:String){
         txtLog.text = ("> " + str + "\n" + txtLog.text).trunc(length:32767) // int16.max
-        NSLog(str) // also log to xcode
     }
     
     func interstitialReady(_ interstitial: PWInterstitial) {
