@@ -99,13 +99,13 @@ class SDKConsumer : NSObject {
         }
     }
     
-    func getVASTVideo(accountID:Int, zoneID:Int, publisherID:Int){
+    func getVASTVideo(accountID:Int, zoneID:Int, publisherID:Int, orientationMask:UIInterfaceOrientationMask? = nil){
         if(self.VASTDelegate == nil){
             self.log("No VAST Delegate was assigned")
             return
         }
         let vast = PWVASTVideo()
-        vast.initialize(accountID: accountID, zoneID:zoneID, publisherID:publisherID, delegate:self.VASTDelegate)
+        vast.initialize(accountID: accountID, zoneID:zoneID, publisherID:publisherID, delegate:self.VASTDelegate, orientationMask:orientationMask)
         vast.play()
     }
 }

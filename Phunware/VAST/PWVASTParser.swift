@@ -98,6 +98,8 @@ class PWVASTParser : NSObject, XMLParserDelegate {
                 switch(self.currentElement){
                 case "StaticResource":
                     self.currentCompanion?.staticResource = string
+                case "HTMLResource":
+                    self.currentCompanion?.htmlResource = string
                 case "Tracking":
                     if(currentCompanion?.trackingEvents == nil){
                         currentCompanion?.trackingEvents = [String:String]()

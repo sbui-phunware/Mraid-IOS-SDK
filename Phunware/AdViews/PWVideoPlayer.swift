@@ -13,11 +13,13 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     private var constraints:[NSLayoutConstraint]? = []
     private var onClose:() -> Void = {}
     private var originalRootController:UIViewController!
-    let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
-    private var delegate:PWVASTDelegate?
+    
+    private var vastDelegate:PWVASTDelegate?
     
     internal var endCardCompanion:PWVASTCompanion? = nil
     internal var addCloseButtonToVideo = true
+    
+    private var orientationMask:UIInterfaceOrientationMask = [.portrait, .landscapeLeft, .landscapeRight]
     
     public func initialize(onClose:@escaping () -> Void){
         self.originalRootController = UIApplication.shared.delegate?.window??.rootViewController
@@ -27,7 +29,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.init(rawValue: 0)
         
         self.onClose = onClose
-        
+        let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
         videoView = WKWebView(frame:fullScreenSize, configuration:config)
         
         view.autoresizesSubviews = true
@@ -43,8 +45,12 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
+    public func setOrientationMask(_ mask:UIInterfaceOrientationMask){
+        self.orientationMask = mask
+    }
+    
     @objc private func didBecomeActive(){
-        NSLog("did become active");
+        
     }
     
     public override var prefersStatusBarHidden: Bool {
@@ -54,15 +60,14 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     }
     
     public override func viewWillAppear(_ animated: Bool) {
-        NSLog("will appear - animated: " + String(animated))
+        
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
-        NSLog("will disappear - animated: " + String(animated))
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        NSLog("webview did finish")
+        NSLog("Webview did finish")
     }
     
     private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -106,8 +111,10 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                 browser.initialize()
                 browser.loadUrl(url!)
                 browser.onClose(perform:{() in
+                    self.vastDelegate?.onBrowserClosing()
                     MRAIDUtilities.setRootController(self.originalRootController!)
                 })
+                self.vastDelegate?.onBrowserOpening()
                 MRAIDUtilities.setRootController(browser)
             }
         }
@@ -126,11 +133,29 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     public func playHTMLVideo(_ body:String, delegate:PWVASTDelegate?, onClose:@escaping() -> Void){
         self.initialize(onClose:onClose)
-        self.delegate = delegate
+        self.vastDelegate = delegate
         videoView!.loadHTMLString(body, baseURL:URL(string:"http://ssp-r.phunware.com/"))
         if(addCloseButtonToVideo){
             addCloseButton()
         }
+    }
+    
+    func hasTopNotch() -> Bool {
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            // with notch: 44.0 on iPhone X, XS, XS Max, XR.
+            // without notch: 24.0 on iPad Pro 12.9" 3rd generation, 20.0 on iPhone 8 on iOS 12+.
+            return UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 24
+        }
+        return false
+    }
+    
+    func getSafeTop() -> CGFloat {
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            // with notch: 44.0 on iPhone X, XS, XS Max, XR.
+            // without notch: 24.0 on iPad Pro 12.9" 3rd generation, 20.0 on iPhone 8 on iOS 12+.
+            return UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0
+        }
+        return 0
     }
     
     internal func addCloseButton(){
@@ -139,10 +164,18 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         let closeH = CGFloat(50)
         
         let closeX = w - closeW
-        let closeY = videoView!.bounds.minY + 3
+        let closeY = hasTopNotch() ?  getSafeTop() : videoView!.bounds.minY + 3
+        
+        
         let buttonRect = CGRect(x:closeX, y:closeY, width:closeW, height:closeH)
         
-        let closeButton = UIButton(frame:buttonRect)
+        var closeButton:UIButton
+        if #available(iOS 11.0, *) {
+            closeButton = UIButton()
+        }else{
+            closeButton = UIButton(frame:buttonRect)
+        }
+        
         closeButton.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
         closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
         closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
@@ -151,7 +184,14 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
     
         closeButton.addTarget(self, action: #selector(close), for:UIControlEvents.touchUpInside)
+
+        
         videoView!.addSubview(closeButton)
+        if #available(iOS 11.0, *) {
+            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            videoView!.addConstraint(NSLayoutConstraint(item:closeButton, attribute: .top, relatedBy: .equal, toItem: videoView!.safeAreaLayoutGuide, attribute: .top, multiplier:1.0, constant:0))
+            videoView!.addConstraint(NSLayoutConstraint(item:closeButton, attribute: .right, relatedBy: .equal, toItem: videoView!.safeAreaLayoutGuide, attribute: .right, multiplier:1.0, constant:0))
+        }
     }
     
     @objc func close(){
@@ -175,12 +215,20 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         return true
     }
     
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return orientationMask
+    }
+    
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 
     }
     
     private func displayEndCard(){
         let markup = getEndCardMarkup()
+        if(markup == ""){
+            close();
+            return;
+        }
         webView.loadHTMLString(markup, baseURL:nil)
         handleEndCardEvents()
         addClickThroughToEndCard()
@@ -242,81 +290,95 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     }
     
     private func getEndCardMarkup() -> String{
-        let markup = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <style>
-        body {
-        background: url('\(endCardCompanion!.staticResource!)') no-repeat fixed;
-        background-size: contain;
-        background-position: center;
+        var markup:String = ""
+        if(endCardCompanion!.staticResource != nil){
+            markup = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <style>
+            body {
+            background: url('\(endCardCompanion!.staticResource!)') no-repeat fixed;
+            background-size: contain;
+            background-position: center;
+            }
+            </style>
+            </script>
+            </head>
+            <body style=\"background-color:black; margin:0; padding:0; font-size:0px; width:\(endCardCompanion!.width!)px; height:\(endCardCompanion!.height!)px;\">
+            <body>
+            </html>
+            """
+        }else if(endCardCompanion!.htmlResource != nil){
+            markup = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+            </script>
+            </head>
+            <body>
+            \(endCardCompanion!.htmlResource!)
+            <body>
+            </html>
+            """
         }
-        </style>
-        </script>
-        </head>
-        <body style=\"background-color:black; margin:0; padding:0; font-size:0px; width:" + \(endCardCompanion!.width!) + "px; height:" + \(endCardCompanion!.height!) + "px;\">
-        </div>
-        <body>
-        </html>
-        """
         return markup
     }
     
     func handleEvent(_ event:String){
         switch(event){
         case "mute":
-            self.delegate?.onMute()
+            self.vastDelegate?.onMute()
         case "unmute":
-            self.delegate?.onUnmute()
+            self.vastDelegate?.onUnmute()
         case "pause":
-            self.delegate?.onPause()
+            self.vastDelegate?.onPause()
         case "resume":
-            self.delegate?.onResume()
+            self.vastDelegate?.onResume()
             
         case "rewind":
-            self.delegate?.onRewind()
+            self.vastDelegate?.onRewind()
             
         case "skip":
-            self.delegate?.onSkip()
+            self.vastDelegate?.onSkip()
             if(endCardCompanion != nil){
                 displayEndCard()
             }else{
                 close()
             }
         case "playerExpand":
-            self.delegate?.onPlayerExpand()
+            self.vastDelegate?.onPlayerExpand()
             
         case "playerCollapse":
-            self.delegate?.onPlayerCollapse()
+            self.vastDelegate?.onPlayerCollapse()
             
         case "notUsed":
-            self.delegate?.onNotUsed()
+            self.vastDelegate?.onNotUsed()
             
         case "loaded":
-            self.delegate?.onLoaded()
+            self.vastDelegate?.onLoaded()
             
         case "start":
-            self.delegate?.onStart()
+            self.vastDelegate?.onStart()
             
         case "firstQuartile":
-            self.delegate?.onFirstQuartile()
+            self.vastDelegate?.onFirstQuartile()
             
         case "midpoint":
-            self.delegate?.onMidpoint()
+            self.vastDelegate?.onMidpoint()
             
         case "thirdQuartile":
-            self.delegate?.onThirdQuartile()
+            self.vastDelegate?.onThirdQuartile()
             
         case "complete":
-            self.delegate?.onComplete()
+            self.vastDelegate?.onComplete()
             if(endCardCompanion != nil){
                 displayEndCard()
             }else{
                 close()
             }
         case "closeLinear":
-            self.delegate?.onCloseLinear()
+            self.vastDelegate?.onCloseLinear()
         default:
             break
         }

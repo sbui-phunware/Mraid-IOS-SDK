@@ -9,7 +9,7 @@
 import UIKit
 import Phunware
 
-class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDelegate, PWVASTDelegate {
+class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDelegate, PWVASTDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var btnGetBanner: UIButton!
     @IBOutlet weak var btnGetInterstitial: UIButton!
@@ -34,6 +34,14 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     @IBOutlet weak var btnDisplayInterstitial: UIButton!
     @IBOutlet weak var btnDismiss: UIButton!
     
+    @IBOutlet weak var viewOrientation: UIView!
+    
+    @IBOutlet weak var pickerOrientation: UIPickerView!
+    
+    
+    @IBOutlet weak var lblPicker: UIButton!
+    let pickerData:[String] = ["none", "portrait", "landscape"]
+    
     var accountID:Int!
     var zoneID:Int!
     var publisherID:Int!
@@ -52,12 +60,10 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
             self.log(str)
         }
         sdk.setLoggingFunction(log)
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         txtAccountID.delegate = self
         txtZoneID.delegate = self
         txtPublisherID.delegate = self
@@ -65,13 +71,62 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         selectPosition(btnBottomCenter)
         sdk.setInterstitialDelegate(self)
         sdk.setVASTDelegate(self)
+        pickerOrientation.delegate = self
+        pickerOrientation.dataSource = self
+        pickerOrientation.isHidden = true
+        lblPicker.isUserInteractionEnabled = true
+        
     }
 
+    @IBAction func pickerTouchDown(_ sender: Any) {
+        lblPicker.isHidden = true
+        pickerOrientation.isHidden = false
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
         return true
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // Number of columns of data
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    // Capture the picker view selection
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // This method is triggered whenever the user makes a change to the picker selection.
+        // The parameter named row and component represents what was selected.
+        lblPicker.setTitle(pickerData[row], for:UIControl.State.normal)
+        lblPicker.isHidden = false
+        pickerOrientation.isHidden = true
+    }
+    
+    // The number of rows of data
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    // The data to return fopr the row and component (column) that's being passed in
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label = UILabel()
+        if let v = view {
+            label = v as! UILabel
+        }
+        label.font = UIFont (name: "Helvetica Neue", size: 10)
+        label.text =  pickerData[row]
+        label.textAlignment = .left
+        return label
+    }
     
     @IBAction func onPositionClicked(_ sender: UIButton) {
         selectPosition(sender)
@@ -121,7 +176,11 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         if(!validateInputs(includePublisher:true)){
             return
         }
-        sdk.getVASTVideo(accountID: self.accountID, zoneID: self.zoneID, publisherID: self.publisherID)
+        var orientationMask:UIInterfaceOrientationMask? = nil
+        if(lblPicker.currentTitle! == "portrait") {orientationMask = [ .portrait ]}
+        if(lblPicker.currentTitle! == "landscape") {orientationMask = [ .landscapeLeft ]}
+        
+        sdk.getVASTVideo(accountID: self.accountID, zoneID: self.zoneID, publisherID: self.publisherID, orientationMask:orientationMask)
     }
     
     @IBAction func onDisplayInterstitialClick(_ sender: Any) {
@@ -294,6 +353,13 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         log("VAST :: closeLinear")
     }
     
+    func onBrowserOpening(){
+        log("VAST :: onBrowserOpening")
+    }
+    
+    func onBrowserClosing(){
+        log("VAST :: onBrowserClosing")
+    }
 }
 
 

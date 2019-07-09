@@ -278,6 +278,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = BEBE254A207C1D5E00D7C655;
 			productRefGroup = BEBE2555207C1D5E00D7C655 /* Products */;
