@@ -10,7 +10,7 @@ import Foundation
 
 public extension Placement {
     /// Sends request to record impression for this `Placement`.
-    public func recordImpression() {
+    func recordImpression() {
         if let accupixelUrl = self.accupixelUrl.flatMap({ URL(string: $0) }) {
             Phunware.requestPixel(with: accupixelUrl)
         }
@@ -28,7 +28,7 @@ public extension Placement {
     }
     
     /// Sends request to record click for this `Placement`.
-    public func recordClick() {
+    func recordClick() {
         if(!self.clicked){
             self.clicked = true
             if let redirectUrl = self.redirectUrl.flatMap({ URL(string: $0) }) {

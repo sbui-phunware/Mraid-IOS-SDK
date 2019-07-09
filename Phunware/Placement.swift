@@ -78,12 +78,12 @@ public extension Placement {
         var height: Int!
         
         if(widthObj is Int){
-            width = widthObj as! Int
+            width = (widthObj as! Int)
         }else if (widthObj is String){
             width = Int(widthObj as! String)
         }
         if(heightObj is Int){
-            height = heightObj as! Int
+            height = (heightObj as! Int)
         }else if(heightObj is String){
             height = Int(heightObj as! String)
         }

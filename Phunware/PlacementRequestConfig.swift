@@ -166,7 +166,7 @@ import AdSupport
 
 public extension PlacementRequestConfig {
     
-    public var queryString: String {
+    var queryString: String {
         var query = ";ID=\(accountId);setID=\(zoneId)"
         if(height != nil && width != nil){query += ";size=\(width as Int?)x\(height as Int?)" }
         

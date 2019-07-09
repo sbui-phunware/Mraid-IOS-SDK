@@ -39,4 +39,8 @@ public protocol PWVASTDelegate {
     //    func onMinimize()
     //    func onClose()
     //    func onOverlayViewDuration()
+    
+    // non standard
+    func onBrowserOpening()
+    func onBrowserClosing()
 }

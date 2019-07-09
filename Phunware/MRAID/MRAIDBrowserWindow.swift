@@ -14,8 +14,8 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
     private static let btnHeight = CGFloat(50)
     private static let navHeight = btnHeight
     
-    private let navigationRect = CGRect(x:0, y:UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height, width:UIScreen.main.bounds.width, height:navHeight)
-    private let webViewRect = CGRect(x:0, y:navHeight + (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height), width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height - navHeight)
+//    private let navigationRect = CGRect(x:0, y:UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height, width:UIScreen.main.bounds.width, height:navHeight)
+//    private let webViewRect = CGRect(x:0, y:navHeight + (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height), width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height - navHeight)
     private var webView:WKWebView?
     private var navigationView:UIView?
     
@@ -31,21 +31,29 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
     private var dividerRect = CGRect(x:0, y:0, width:4.0, height:btnHeight)
     private var onCloseDelegate:()->Void = {}
     
+    
     public func initialize(){
         webView = WKWebView()
         webView!.isOpaque = true
         webView!.isUserInteractionEnabled = true
-        webView!.frame = webViewRect
+        //webView!.frame = webViewRect
         webView!.navigationDelegate = self
         view.backgroundColor = UIColor.white
         view.isUserInteractionEnabled = true
-        navigationView = UIView(frame:navigationRect)
+        navigationView = UIView()
         navigationView!.isOpaque = true
         navigationView!.isUserInteractionEnabled = true
         navigationView!.backgroundColor = UIColor(red: 238.0/255.0, green: 238.0/255.0, blue: 238.0/255.0, alpha: 1)
         view.addSubview(navigationView!)
         view.addSubview(webView!)
+        addFrameConstraints()
         addNavigationButtons()
+    }
+    
+    public override var prefersStatusBarHidden: Bool {
+        get {
+            return false
+        }
     }
     
     public func loadUrl(_ url:String){
@@ -128,6 +136,48 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
     
     @objc public func onForwardClicked(){
         webView!.goForward()
+    }
+    
+    private func addFrameConstraints(){
+        if #available(iOS 11.0, *) {
+            navigationView?.translatesAutoresizingMaskIntoConstraints = false
+            webView?.translatesAutoresizingMaskIntoConstraints = false
+            view!.addConstraint(NSLayoutConstraint(item:navigationView!, attribute: .top, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .top, multiplier:1.0, constant:0))
+            view!.addConstraint(NSLayoutConstraint(item:navigationView!, attribute: .left, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .left, multiplier:1.0, constant:0))
+            view!.addConstraint(NSLayoutConstraint(item:navigationView!, attribute: .right, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .right, multiplier:1.0, constant:0))
+            NSLayoutConstraint.activate([navigationView!.heightAnchor.constraint(equalToConstant: MRAIDBrowserWindow.navHeight)])
+            
+            view!.addConstraint(NSLayoutConstraint(item:webView!, attribute: .top, relatedBy: .equal, toItem: navigationView!, attribute: .bottom, multiplier:1.0, constant:0))
+            view!.addConstraint(NSLayoutConstraint(item:webView!, attribute: .left, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .left, multiplier:1.0, constant:0))
+            view!.addConstraint(NSLayoutConstraint(item:webView!, attribute: .right, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .right, multiplier:1.0, constant:0))
+            view!.addConstraint(NSLayoutConstraint(item:webView!, attribute: .bottom, relatedBy: .equal, toItem: view!.safeAreaLayoutGuide, attribute: .bottom, multiplier:1.0, constant:0))
+        }else{
+            setOldIOSFrames()
+        }
+    }
+    
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if #available(iOS 11.0, *){
+            // constraints shoudl handle it
+        }else{
+            setOldIOSFrames(true)
+        }
+        
+    }
+    
+    private func setOldIOSFrames(_ invert:Bool = false){
+        if(invert){
+            let navigationRect = CGRect(x:0, y:UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height, width:UIScreen.main.bounds.height, height:MRAIDBrowserWindow.navHeight)
+            let webViewRect = CGRect(x:0, y:MRAIDBrowserWindow.navHeight + (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height), width:UIScreen.main.bounds.height, height:UIScreen.main.bounds.width - MRAIDBrowserWindow.navHeight)
+            navigationView!.frame = navigationRect
+            webView!.frame = webViewRect
+        }else{
+            let navigationRect = CGRect(x:0, y:UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height, width:UIScreen.main.bounds.width, height:MRAIDBrowserWindow.navHeight)
+            let webViewRect = CGRect(x:0, y:MRAIDBrowserWindow.navHeight + (UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height), width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height - MRAIDBrowserWindow.navHeight)
+            navigationView!.frame = navigationRect
+            webView!.frame = webViewRect
+        }
     }
     
     private func addButtonConstraints(){

@@ -12,21 +12,26 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
     private var sources:[Source]?
     private var delegate:PWVASTDelegate?
     private var videoPlayer:PWVideoPlayer!
+    private var orientationMask:UIInterfaceOrientationMask = [.portrait, .landscapeLeft, .landscapeRight]
 
     
-    private let baseurl = "http://ssp-r.phunware.com"
+    private let baseURL = "http://ssp-r.phunware.com"
+    //private let baseurl = "http://servedbyadbutler.com.vm.test"
     
     struct Source {
         public var source:String!
         public var type:String!
     }
     
-    public func initialize(accountID:Int, zoneID:Int, publisherID:Int, delegate:PWVASTDelegate?, poster:String? = ""){
+    public func initialize(accountID:Int, zoneID:Int, publisherID:Int, delegate:PWVASTDelegate?, orientationMask:UIInterfaceOrientationMask? = nil, poster:String? = ""){
         self.zoneID = zoneID
         self.accountID = accountID
         self.publisherID = publisherID
         self.poster = poster
         self.delegate = delegate
+        if(orientationMask != nil){
+            self.orientationMask = orientationMask!
+        }
     }
     
     public func addSource(source:String, type:String){
@@ -42,9 +47,9 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
             <head>
                 <meta name="viewport" content="initial-scale=1.0" />
                 <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-                <script src="http://vjs.zencdn.net/4.12/video.js?v=1"></script>
-                <link href="\(baseurl)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css" rel="stylesheet">
-                <script src="http://servedbyadbutler.com.vm.test/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js?v=5"></script>
+                <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+                <link href="\(baseURL)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css?v=5" rel="stylesheet">
+                <script src="\(baseURL)/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js?v=5"></script>
             </head>
             <body style="margin:0px; background-color:black">
             <video id="av_video" class="video-js vjs-default-skin" playsinline="true" autoplay="true"
@@ -56,7 +61,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
         str += "data-setup='{ "
         str += "\"plugins\": { "
         str += "\"vastClient\": { "
-        str += "\"adTagUrl\": \"\(baseurl)/vasttemp.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
+        str += "\"adTagUrl\": \"\(baseURL)/vasttemp.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
         str += "\"adCancelTimeout\": 5000, "
         str += "\"adsEnabled\": true "
         str += "} "
@@ -67,7 +72,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
                 str += "<source src=\"\(s.source!)\" type='\(s.type!)'/>"
             }
         }else{
-            str += "<source src=\"\(baseurl)/assets/blank.mp4\" type='video/mp4'/>"
+            str += "<source src=\"\(baseURL)/assets/blank.mp4\" type='video/mp4'/>"
         }
         str += """
         <p class="vjs-no-js">
@@ -84,6 +89,7 @@ public class PWVASTVideo : UIViewController, WKUIDelegate {
     public func play(){
         videoPlayer = PWVideoPlayer()
         videoPlayer.addCloseButtonToVideo = false
+        self.videoPlayer.setOrientationMask(self.orientationMask)
         let body = self.getVideoJSMarkup()
         let previousRootController = UIApplication.shared.delegate?.window??.rootViewController
         MRAIDUtilities.setRootController(videoPlayer)
