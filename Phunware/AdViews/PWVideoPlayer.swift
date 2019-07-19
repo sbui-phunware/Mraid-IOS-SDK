@@ -20,6 +20,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     internal var addCloseButtonToVideo = true
     
     private var orientationMask:UIInterfaceOrientationMask = [.portrait, .landscapeLeft, .landscapeRight]
+    private var endCardActive:Bool = false
     
     public func initialize(onClose:@escaping () -> Void){
         self.originalRootController = UIApplication.shared.delegate?.window??.rootViewController
@@ -105,7 +106,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                     let event = String(url![from!..<to])
                     handleEvent(event)
                 }
-            }else if (url!.range(of:"callback.spark") == nil && url!.range(of:"callback-p.spark") == nil){
+            }else if (!endCardActive && url!.range(of:"callback.spark") == nil && url!.range(of:"callback-p.spark") == nil){
                 NSLog("Requesting URL -- " + url!)
                 let browser = MRAIDBrowserWindow()
                 browser.initialize()
@@ -195,6 +196,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     }
     
     @objc func close(){
+        endCardActive = false
         videoView!.removeFromSuperview()
         videoView = nil
         removeFromParentViewController()
@@ -229,9 +231,12 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             close();
             return;
         }
+        endCardActive = true
         webView.loadHTMLString(markup, baseURL:nil)
         handleEndCardEvents()
-        addClickThroughToEndCard()
+        if(endCardCompanion!.staticResource != nil){
+            addClickThroughToEndCard()
+        }
         addCloseButton()
     }
     
@@ -309,7 +314,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             <body>
             </html>
             """
-        }else if(endCardCompanion!.htmlResource != nil){
+        }else if(endCardCompanion!.htmlResource != nil && endCardCompanion!.htmlResource!.range(of: "</html>") == nil){
             markup = """
             <!DOCTYPE html>
             <html>
@@ -321,6 +326,8 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
             <body>
             </html>
             """
+        }else if(endCardCompanion!.htmlResource != nil && endCardCompanion!.htmlResource!.range(of: "</html>") != nil){
+            markup = endCardCompanion!.htmlResource!
         }
         return markup
     }
