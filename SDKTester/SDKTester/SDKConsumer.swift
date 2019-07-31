@@ -18,6 +18,7 @@ class SDKConsumer : NSObject {
     var interstitial:PWInterstitial? = nil
     var log:(String)->Void = { str in }
     var position:String = Positions.BOTTOM_CENTER
+    var vast:PWVASTVideo?
     
     init(parentViewController:ViewController) {
         self.parentViewController = parentViewController
@@ -104,8 +105,12 @@ class SDKConsumer : NSObject {
             self.log("No VAST Delegate was assigned")
             return
         }
-        let vast = PWVASTVideo()
-        vast.initialize(accountID: accountID, zoneID:zoneID, publisherID:publisherID, delegate:self.VASTDelegate, orientationMask:orientationMask)
-        vast.play()
+        vast = PWVASTVideo()
+        vast!.initialize(accountID: accountID, zoneID:zoneID, publisherID:publisherID, delegate:self.VASTDelegate, orientationMask:orientationMask)
+        vast!.preload(container:parentViewController!.view)
+    }
+    
+    func displayVASTVideo(){
+        self.vast!.display()
     }
 }

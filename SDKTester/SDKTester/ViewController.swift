@@ -173,6 +173,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     }
     
     @IBAction func onGetVASTVideoClick(_ sender: Any) {
+        log("Retrieving VAST Video - will autoplay when ready...")
         if(!validateInputs(includePublisher:true)){
             return
         }
@@ -359,6 +360,16 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     
     func onBrowserClosing(){
         log("VAST :: onBrowserClosing")
+    }
+    
+    func onReady(){
+        log("VAST :: onReady")
+        log("Autoplaying VAST")
+        self.sdk.displayVASTVideo()
+    }
+    
+    func onError(){
+        log("VAST :: onError")
     }
 }
 
