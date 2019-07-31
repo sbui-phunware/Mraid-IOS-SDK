@@ -13,6 +13,8 @@ class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
 
     var banner: PWBanner?
     var interstitial: PWInterstitial?
+    var vast:PWVASTVideo?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -67,9 +69,9 @@ class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
     }
     
     @IBAction func onClickVAST(_ sender: Any){
-        let vast = PWVASTVideo()
-        vast.initialize(accountID: 174812, zoneID:6792, publisherID:61936, delegate:self)
-        vast.play()
+        vast = PWVASTVideo()
+        vast!.initialize(accountID: 174812, zoneID:6792, publisherID:61936, delegate:self)
+        vast!.preload(container: self.view)
     }
     
     
@@ -152,6 +154,24 @@ class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
     
     func onCloseLinear() {
         print("closeLinear")
+    }
+    
+    func onBrowserOpening(){
+        print("onBrowserOpening")
+    }
+    
+    func onBrowserClosing(){
+        print("onBrowserClosing")
+    }
+    
+    func onReady(){
+        print("onReady")
+        print("Autoplaying VAST")
+        self.vast!.display()
+    }
+    
+    func onError(){
+        print("onError")
     }
     
 }

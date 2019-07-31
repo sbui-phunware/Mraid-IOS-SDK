@@ -12,10 +12,10 @@ class PWVASTParser : NSObject, XMLParserDelegate {
     private var currentCompanion:PWVASTCompanion?
     private var currentElement:String?
     private var currentEvent:String?
-    private var videoPlayer:PWVideoPlayer!
+    private var vastVideo:PWVASTVideo!
     
-    init(videoPlayer:PWVideoPlayer){
-        self.videoPlayer = videoPlayer
+    init(_ vastVideo:PWVASTVideo){
+        self.vastVideo = vastVideo
         super.init()
     }
     
@@ -51,8 +51,8 @@ class PWVASTParser : NSObject, XMLParserDelegate {
     }
     
     public func parserDidEndDocument(_ parser: XMLParser){
-        if(self.videoPlayer != nil){
-            self.videoPlayer!.endCardCompanion = findBestCompanion()
+        if(self.vastVideo != nil){
+            self.vastVideo!.endCardCompanion = findBestCompanion()
         }
     }
     
@@ -70,13 +70,11 @@ class PWVASTParser : NSObject, XMLParserDelegate {
                 currentCompanion!.height = Int(h!)
             }
         }
-        if(self.videoPlayer != nil){
+        if(self.vastVideo != nil){
             if(elementName == "Linear"){
                 let so = attributeDict["skipoffset"]
                 if(so == nil){
-                    OperationQueue.main.addOperation{
-                        self.videoPlayer.addCloseButton()
-                    }
+                    self.vastVideo.closeButtonRequired = true
                 }
             }
             if(elementName == "Tracking"){

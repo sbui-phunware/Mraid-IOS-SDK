@@ -43,4 +43,6 @@ public protocol PWVASTDelegate {
     // non standard
     func onBrowserOpening()
     func onBrowserClosing()
+    func onReady()
+    func onError()
 }

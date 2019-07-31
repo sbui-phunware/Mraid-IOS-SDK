@@ -21,6 +21,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     private var orientationMask:UIInterfaceOrientationMask = [.portrait, .landscapeLeft, .landscapeRight]
     private var endCardActive:Bool = false
+    private var vastVideo:PWVASTVideo?
     
     public func initialize(onClose:@escaping () -> Void){
         self.originalRootController = UIApplication.shared.delegate?.window??.rootViewController
@@ -40,6 +41,26 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         videoView!.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
         videoView!.uiDelegate = self
         videoView!.navigationDelegate = self
+        
+        view.addSubview(videoView!)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+    }
+    
+    public func initialize(webView:WKWebView, onClose:@escaping()->Void){
+        self.originalRootController = UIApplication.shared.delegate?.window??.rootViewController
+        
+        self.onClose = onClose
+        let fullScreenSize = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:UIScreen.main.bounds.height)
+    
+        videoView = webView;
+        videoView!.frame = fullScreenSize;
+        
+        view.autoresizesSubviews = true
+        view.isUserInteractionEnabled = true
+        view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
+        
+        videoView!.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleWidth, .flexibleHeight]
         
         view.addSubview(videoView!)
         
@@ -93,19 +114,11 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
                 }
             }
             else if (url!.range(of:"vast://") != nil){
-                if(url!.range(of:"vastresponse?xml=") != nil){
-                    let range = url!.range(of:"vast://vastresponse?xml=")
-                    let from = range?.upperBound
-                    let to = url!.endIndex
-                    let xml = String(url![from!..<to])
-                    PWVASTParser(videoPlayer: self).parseXML(xml.decodeUrl()!)
-                }else{
-                    let range = url!.range(of:"vast://")
-                    let from = range?.upperBound
-                    let to = url!.endIndex
-                    let event = String(url![from!..<to])
-                    handleEvent(event)
-                }
+                let range = url!.range(of:"vast://")
+                let from = range?.upperBound
+                let to = url!.endIndex
+                let event = String(url![from!..<to])
+                vastVideo?.handleEvent(event)
             }else if (!endCardActive && url!.range(of:"callback.spark") == nil && url!.range(of:"callback-p.spark") == nil){
                 NSLog("Requesting URL -- " + url!)
                 let browser = MRAIDBrowserWindow()
@@ -127,6 +140,15 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         self.initialize(onClose:onClose);
         let request:URLRequest = URLRequest(url:url)
         videoView!.load(request)
+        if(addCloseButtonToVideo){
+            addCloseButton()
+        }
+    }
+    
+    public func playPreloadedVideo(_ webView:WKWebView, onClose:@escaping() -> Void){
+        self.initialize(webView:webView, onClose:onClose);
+        let js = "document.getElementById('av_video').player.play();"
+        self.videoView!.evaluateJavaScript(js, completionHandler: nil)
         if(addCloseButtonToVideo){
             addCloseButton()
         }
@@ -201,8 +223,8 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         videoView = nil
         removeFromParentViewController()
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        onClose()
         dismiss(animated:false)
+        onClose()
     }
     
     public var webView:WKWebView {
@@ -225,7 +247,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
 
     }
     
-    private func displayEndCard(){
+    internal func displayEndCard(){
         let markup = getEndCardMarkup()
         if(markup == ""){
             close();
@@ -332,62 +354,5 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         return markup
     }
     
-    func handleEvent(_ event:String){
-        switch(event){
-        case "mute":
-            self.vastDelegate?.onMute()
-        case "unmute":
-            self.vastDelegate?.onUnmute()
-        case "pause":
-            self.vastDelegate?.onPause()
-        case "resume":
-            self.vastDelegate?.onResume()
-            
-        case "rewind":
-            self.vastDelegate?.onRewind()
-            
-        case "skip":
-            self.vastDelegate?.onSkip()
-            if(endCardCompanion != nil){
-                displayEndCard()
-            }else{
-                close()
-            }
-        case "playerExpand":
-            self.vastDelegate?.onPlayerExpand()
-            
-        case "playerCollapse":
-            self.vastDelegate?.onPlayerCollapse()
-            
-        case "notUsed":
-            self.vastDelegate?.onNotUsed()
-            
-        case "loaded":
-            self.vastDelegate?.onLoaded()
-            
-        case "start":
-            self.vastDelegate?.onStart()
-            
-        case "firstQuartile":
-            self.vastDelegate?.onFirstQuartile()
-            
-        case "midpoint":
-            self.vastDelegate?.onMidpoint()
-            
-        case "thirdQuartile":
-            self.vastDelegate?.onThirdQuartile()
-            
-        case "complete":
-            self.vastDelegate?.onComplete()
-            if(endCardCompanion != nil){
-                displayEndCard()
-            }else{
-                close()
-            }
-        case "closeLinear":
-            self.vastDelegate?.onCloseLinear()
-        default:
-            break
-        }
-    }
+    
 }
