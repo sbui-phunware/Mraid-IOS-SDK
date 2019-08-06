@@ -72,7 +72,7 @@ import AdSupport
 
     
     
-    public init(accountId: Int, zoneId: Int, width: Int?, height: Int?, personalizedAdsEnabled: Bool = true, keywords: [String] = [], click: String? = nil, customExtras: [AnyHashable: Any]?) {
+    @objc public init(accountId: Int, zoneId: Int, width: Int, height: Int, personalizedAdsEnabled: Bool = true, keywords: [String] = [], click: String? = nil, customExtras: [AnyHashable: Any]?) {
         super.init()
         self.accountId = accountId
         self.zoneId = zoneId
