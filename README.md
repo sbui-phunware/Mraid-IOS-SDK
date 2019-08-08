@@ -1,6 +1,10 @@
 
 # phunware-ios-mraid-sdk v0.9 - end user
 
+The Phunware iOS SDK allows you to insert Phunware ads into your app.  This includes Banners, Interstitials and VAST Video ads.
+
+MRAID 2.0 is supported for Banners and Interstitials.
+
 Requirements:
 ● iOS 10.1+
 ● Xcode 8.1+
