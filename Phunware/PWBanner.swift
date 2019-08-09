@@ -1,9 +1,10 @@
 import Foundation
 
-public class PWBanner: NSObject {
+@objc public class PWBanner: NSObject {
     private var imageView:UIView? = nil
     private var viewController:UIViewController? = nil
-    public init(placement:Placement, parentViewController:UIViewController, frame:CGRect, respectSafeAreaLayoutGuide:Bool = false){
+    
+    @objc public init(placement:Placement, parentViewController:UIViewController, frame:CGRect, respectSafeAreaLayoutGuide:Bool = false){
         super.init()
         if(placement.body != nil){
             let banner = PWMRAIDBanner()
@@ -21,7 +22,7 @@ public class PWBanner: NSObject {
         }
     }
     
-    public init(placement:Placement, parentViewController:UIViewController, position:String, respectSafeAreaLayoutGuide:Bool = false){
+    @objc public init(placement:Placement, parentViewController:UIViewController, position:String, respectSafeAreaLayoutGuide:Bool = false){
         super.init()
         if(placement.body != nil){
             let banner = PWMRAIDBanner()
