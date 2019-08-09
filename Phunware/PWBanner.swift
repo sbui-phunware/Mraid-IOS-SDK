@@ -4,7 +4,7 @@ import Foundation
     private var imageView:UIView? = nil
     private var viewController:UIViewController? = nil
     
-    @objc public init(placement:Placement, parentViewController:UIViewController, frame:CGRect, respectSafeAreaLayoutGuide:Bool = false){
+    @objc public init(placement:Placement, parentViewController:UIViewController, frame:CGRect, respectSafeAreaLayoutGuide:Bool){
         super.init()
         if(placement.body != nil){
             let banner = PWMRAIDBanner()
@@ -22,7 +22,7 @@ import Foundation
         }
     }
     
-    @objc public init(placement:Placement, parentViewController:UIViewController, position:String, respectSafeAreaLayoutGuide:Bool = false){
+    @objc public init(placement:Placement, parentViewController:UIViewController, position:String, respectSafeAreaLayoutGuide:Bool){
         super.init()
         if(placement.body != nil){
             let banner = PWMRAIDBanner()
