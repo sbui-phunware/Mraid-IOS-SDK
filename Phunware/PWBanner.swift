@@ -4,7 +4,7 @@ import Foundation
     private var imageView:UIView? = nil
     private var viewController:UIViewController? = nil
 
-    @objc public init(placement:Placement, container:UIView, respectSafeAreaLayoutGuide:Bool = false){
+    @objc public init(placement:Placement, container:UIView, respectSafeAreaLayoutGuide:Bool){
         super.init()
         if(placement.imageUrl != nil){
             placement.getImageView { imageView in
