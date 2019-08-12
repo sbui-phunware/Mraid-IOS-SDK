@@ -11,6 +11,7 @@ import Foundation
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.imageView = imageView
                 container.addSubview(imageView)
+                imageView.frame = CGRect(x:0, y:0, width:container.frame.width, height:container.frame.height)
                 NSLayoutConstraint.activate([
                     imageView.heightAnchor.constraint(equalTo:container.heightAnchor),
                     imageView.widthAnchor.constraint(equalTo:container.widthAnchor)
