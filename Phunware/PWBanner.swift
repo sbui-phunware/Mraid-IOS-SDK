@@ -42,7 +42,9 @@ public class PWBanner: NSObject {
                 if(position.range(of:"left") == nil && position.range(of:"right") == nil){
                     x = (parentRect.width / 2) - CGFloat((placement.width / 2))
                 }
-                y = (parentRect.height / 2) - CGFloat((placement.height / 2))
+                if(position.range(of:"top") == nil && position.range(of:"bottom") == nil){
+                    y = (parentRect.height / 2) - CGFloat((placement.height / 2))
+                }
             }
             
             

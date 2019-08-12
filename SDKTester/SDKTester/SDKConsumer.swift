@@ -17,7 +17,7 @@ class SDKConsumer : NSObject {
     var banner:PWBanner? = nil
     var interstitial:PWInterstitial? = nil
     var log:(String)->Void = { str in }
-    var position:String = Positions.BOTTOM_CENTER
+    var position:String? = nil
     var vast:PWVASTVideo?
     
     init(parentViewController:ViewController) {
@@ -37,7 +37,7 @@ class SDKConsumer : NSObject {
         self.log = log
     }
     
-    func setPosition(_ position:String){
+    func setPosition(_ position:String?){
         self.position = position
     }
     
@@ -59,7 +59,7 @@ class SDKConsumer : NSObject {
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position)
+                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position!, respectSafeAreaLayoutGuide:false)
             case .badRequest(let statusCode, let responseBody):
                 self.log("Bad Request.  Status Code - " + String(statusCode ?? 0) + "     \nresponseBody: \n" + (responseBody ?? ""))
                 return

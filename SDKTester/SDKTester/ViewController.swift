@@ -69,7 +69,6 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         txtZoneID.delegate = self
         txtPublisherID.delegate = self
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action:#selector(self.closeTextBoxes(_:))))
-        selectPosition(btnBottomCenter)
         sdk.setInterstitialDelegate(self)
         sdk.setVASTDelegate(self)
         pickerOrientation.delegate = self
@@ -134,9 +133,14 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     }
     
     func selectPosition(_ btn:UIButton){
-        selectedPosition?.backgroundColor = unselectedColor
-        btn.backgroundColor = selectedColor
-        selectedPosition = btn
+        if(btn == selectedPosition){
+            selectedPosition?.backgroundColor = unselectedColor
+            selectedPosition = nil
+        }else{
+            selectedPosition?.backgroundColor = unselectedColor
+            btn.backgroundColor = selectedColor
+            selectedPosition = btn
+        }
     }
     
     @objc func closeTextBoxes(_ sender:Any){
@@ -160,8 +164,13 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         if(!validateInputs(includePublisher:false)){
             return
         }
-        sdk.setPosition(getPositionString())
-        sdk.getBanner(accountID:self.accountID, zoneID:self.zoneID, container:bannerContainer)
+        let pos:String? = getPositionString()
+        sdk.setPosition(pos)
+        if(pos != nil){
+            sdk.getBanner(accountID:self.accountID, zoneID:self.zoneID)
+        }else{
+            sdk.getBanner(accountID:self.accountID, zoneID:self.zoneID, container:bannerContainer)
+        }
         btnDismiss.isHidden = false
     }
     
@@ -242,7 +251,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         return true
     }
     
-    func getPositionString() -> String {
+    func getPositionString() -> String? {
         switch(selectedPosition){
         case btnTopLeft:
             return Positions.TOP_LEFT
@@ -263,7 +272,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         case btnBottomRight:
             return Positions.BOTTOM_RIGHT
         default:
-            return Positions.BOTTOM_CENTER
+            return nil
         }
     }
     
