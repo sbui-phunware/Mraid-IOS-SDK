@@ -3,21 +3,21 @@ import Foundation
 public class PWBanner: NSObject {
     private var imageView:UIView? = nil
     private var viewController:UIViewController? = nil
-    public init(placement:Placement, parentViewController:UIViewController, frame:CGRect, respectSafeAreaLayoutGuide:Bool = false){
+    public init(placement:Placement, container:UIView, respectSafeAreaLayoutGuide:Bool = false){
         super.init()
-        if(placement.body != nil){
-            let banner = PWMRAIDBanner()
-            self.viewController = banner
-            banner.initialize(placement:placement, parentViewController:parentViewController, frame:frame, respectSafeArea:respectSafeAreaLayoutGuide)
-            placement.recordImpression()
-        }else if(placement.imageUrl != nil){
+        if(placement.imageUrl != nil){
             placement.getImageView { imageView in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                imageView.frame = frame
                 self.imageView = imageView
-                parentViewController.view.addSubview(imageView)
+                container.addSubview(imageView)
+                NSLayoutConstraint.activate([
+                    imageView.heightAnchor.constraint(equalTo:container.heightAnchor),
+                    imageView.widthAnchor.constraint(equalTo:container.widthAnchor)
+                    ])
                 placement.recordImpression()
             }
+        }else{
+            NSLog("Error - HTML Banners cannot be initialized with a container view.  Please use the init(placement:Placement, parentViewController:UIViewController, position:String, respectSafeAreaLayoutGuide:Bool = false) constructor")
         }
     }
     

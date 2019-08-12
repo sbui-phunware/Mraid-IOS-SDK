@@ -38,6 +38,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     
     @IBOutlet weak var pickerOrientation: UIPickerView!
     
+    @IBOutlet weak var bannerContainer: UIView!
     
     @IBOutlet weak var lblPicker: UIButton!
     let pickerData:[String] = ["none", "portrait", "landscape"]
@@ -160,7 +161,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
             return
         }
         sdk.setPosition(getPositionString())
-        sdk.getBanner(accountID:self.accountID, zoneID:self.zoneID)
+        sdk.getBanner(accountID:self.accountID, zoneID:self.zoneID, container:bannerContainer)
         btnDismiss.isHidden = false
     }
     

@@ -17,8 +17,8 @@ import AdSupport
     // Ad Details
     public var accountId: Int = 0
     public var zoneId: Int = 0
-    public var width: Int? = nil
-    public var height: Int? = nil
+    public var width: Int = 0
+    public var height: Int = 0
     public var keywords: [String] = []
     public var click: String?
     public var advertisingId : String?
