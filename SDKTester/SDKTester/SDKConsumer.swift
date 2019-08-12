@@ -17,7 +17,7 @@ class SDKConsumer : NSObject {
     var banner:PWBanner? = nil
     var interstitial:PWInterstitial? = nil
     var log:(String)->Void = { str in }
-    var position:String = Positions.BOTTOM_CENTER
+    var position:String? = nil
     var vast:PWVASTVideo?
     
     init(parentViewController:ViewController) {
@@ -37,7 +37,7 @@ class SDKConsumer : NSObject {
         self.log = log
     }
     
-    func setPosition(_ position:String){
+    func setPosition(_ position:String?){
         self.position = position
     }
     
@@ -46,7 +46,7 @@ class SDKConsumer : NSObject {
     }
     
     func getBanner(accountID:Int, zoneID:Int){
-        let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:nil, height:nil, customExtras:nil)
+        let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:0, height:0, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
@@ -59,7 +59,35 @@ class SDKConsumer : NSObject {
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position)
+                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position!, respectSafeAreaLayoutGuide:false)
+            case .badRequest(let statusCode, let responseBody):
+                self.log("Bad Request.  Status Code - " + String(statusCode ?? 0) + "     \nresponseBody: \n" + (responseBody ?? ""))
+                return
+            case .invalidJson(let responseBody):
+                self.log("Invalid JSON.\nresponseBody: \n" + (responseBody ?? ""))
+                return
+            case .requestError( _):
+                self.log("Error in request placment")
+                return
+            }
+        }
+    }
+    
+    func getBanner(accountID:Int, zoneID:Int, container:UIView){
+        let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:0, height:0, customExtras:nil)
+        Phunware.requestPlacement(with: config) { response in
+            switch response {
+            case .success(_ , let placements):
+                guard placements.count == 1 else {
+                    self.log("Error - Invalid number of placements returned")
+                    return
+                }
+                guard placements[0].isValid else {
+                    self.log("Error - Invalid placement")
+                    return
+                }
+                self.banner?.destroy()
+                self.banner = PWBanner(placement:placements[0], container:container, respectSafeAreaLayoutGuide: false)
             case .badRequest(let statusCode, let responseBody):
                 self.log("Bad Request.  Status Code - " + String(statusCode ?? 0) + "     \nresponseBody: \n" + (responseBody ?? ""))
                 return
@@ -79,7 +107,7 @@ class SDKConsumer : NSObject {
             return
         }
         
-        let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:nil, height:nil, customExtras:nil)
+        let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:0, height:0, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
