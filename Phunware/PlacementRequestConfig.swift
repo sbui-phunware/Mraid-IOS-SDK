@@ -35,7 +35,7 @@ import AdSupport
     public var longitude : Double?
 #if os(iOS) || os(watchOS) || os(tvOS)
     public var deviceModel : String? = UIDevice.current.model
-    public var deviceType : String? = UIDevice.current.modelName
+    public var deviceType : String? = UIDevice.current.modelName.replacingOccurrences(of: " ", with: "_")
     public var osName : String? = UIDevice.current.systemName
     public var osVersion : String? = UIDevice.current.systemVersion
 #elseif os(OSX)
