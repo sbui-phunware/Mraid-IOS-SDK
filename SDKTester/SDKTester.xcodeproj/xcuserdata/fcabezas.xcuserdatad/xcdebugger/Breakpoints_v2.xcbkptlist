@@ -2,4 +2,100 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Phunware/AdViews/PWImageView.swift"
+            timestampString = "587346641.925598"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "tap()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Phunware/PlacementRequestConfig.swift"
+            timestampString = "587346687.6877019"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "PlacementRequestConfig"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Phunware.PlacementRequestConfig.osName.getter : Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "Phunware"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcabezas/phunware_builds/Repos/Mraid-IOS-SDK/Phunware/PlacementRequestConfig.swift"
+                  timestampString = "587346687.7491471"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Phunware.PlacementRequestConfig.osName.setter : Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "Phunware"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcabezas/phunware_builds/Repos/Mraid-IOS-SDK/Phunware/PlacementRequestConfig.swift"
+                  timestampString = "587346687.750448"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Phunware.PlacementRequestConfig.osName.modify : Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "Phunware"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcabezas/phunware_builds/Repos/Mraid-IOS-SDK/Phunware/PlacementRequestConfig.swift"
+                  timestampString = "587346687.751941"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Phunware.PlacementRequestConfig.osName.modify : Swift.Optional&lt;Swift.String&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "Phunware"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fcabezas/phunware_builds/Repos/Mraid-IOS-SDK/Phunware/PlacementRequestConfig.swift"
+                  timestampString = "587346687.753611"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
