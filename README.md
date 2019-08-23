@@ -59,7 +59,7 @@ Width and height are optional here.  Most of the time the width and height will 
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position!, respectSafeAreaLayoutGuide:false, placementRequestConfig:config)
+                self.banner = PWBanner(placement:placements[0], parentViewController:self, position:self.Positions.BOTTOM_CENTER, respectSafeAreaLayoutGuide:false, placementRequestConfig:config)
             case .badRequest(let statusCode, let responseBody):
                 return
             case .invalidJson(let responseBody):
