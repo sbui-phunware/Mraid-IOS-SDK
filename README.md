@@ -69,6 +69,8 @@ Width and height are optional here.  Most of the time the width and height will 
             }
         }
 
+You can also pass a container `UIView` to `PWBanner()` instead of `position` and the ad will take on the size and location of the container.
+
 ### Interstitials
 
 Your view controller  will need to implement the PWInterstitialDelegate interface to retrieve event information.
