@@ -59,7 +59,7 @@ class SDKConsumer : NSObject {
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position!, respectSafeAreaLayoutGuide:false)
+                self.banner = PWBanner(placement:placements[0], parentViewController:self.parentViewController, position:self.position!, respectSafeAreaLayoutGuide:false, placementRequestConfig:config)
             case .badRequest(let statusCode, let responseBody):
                 self.log("Bad Request.  Status Code - " + String(statusCode ?? 0) + "     \nresponseBody: \n" + (responseBody ?? ""))
                 return
@@ -87,7 +87,7 @@ class SDKConsumer : NSObject {
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], container:container, respectSafeAreaLayoutGuide: false)
+                self.banner = PWBanner(placement:placements[0], container:container, respectSafeAreaLayoutGuide: false, placementRequestConfig:config)
             case .badRequest(let statusCode, let responseBody):
                 self.log("Bad Request.  Status Code - " + String(statusCode ?? 0) + "     \nresponseBody: \n" + (responseBody ?? ""))
                 return
@@ -95,7 +95,7 @@ class SDKConsumer : NSObject {
                 self.log("Invalid JSON.\nresponseBody: \n" + (responseBody ?? ""))
                 return
             case .requestError( _):
-                self.log("Error in request placment")
+                self.log("Error in request placement")
                 return
             }
         }

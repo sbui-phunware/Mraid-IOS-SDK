@@ -62,6 +62,15 @@ fileprivate let baseUrl = "https://ssp-r.phunware.com/adserve"
         requestPlacement(with: config) { $0.objcCallbacks(success: success, failure: failure) }
     }
     
+    public static func refreshPlacement(with placement: Placement, config:PlacementRequestConfig, completionHandler: @escaping (Response) -> Void){
+        let placementOperation = PlacementRequestOperation(session:session, baseUrl: baseUrl, config:config, completionHandler: completionHandler)
+        placementOperation.refresh(url:placement.refreshUrl!)
+    }
+    
+    @objc public static func refreshPlacement(placement: Placement, config:PlacementRequestConfig, success: @escaping(String, [Placement]) -> Void, failure: @escaping(NSNumber?, String?, Error?) -> Void) {
+        refreshPlacement(with: placement, config:config) { $0.objcCallbacks(success: success, failure: failure) }
+    }
+    
     /**
      Requests a pixel.
      

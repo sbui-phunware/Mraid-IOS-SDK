@@ -75,12 +75,29 @@ class PlacementRequestOperation: AsynchronousOperation {
         _task = _getTask(for: request)
         _task?.resume()
     }
+    
+    func refresh(url:String){
+        guard let request = _config.getRefreshRequest(with: url) else {
+            print("Failed in getting a refresh request for account id \(_config.accountId) and zone id \(_config.zoneId)")
+            return
+        }
+        
+        _task = _getTask(for: request)
+        _task?.resume()
+    }
 }
 
 fileprivate extension PlacementRequestConfig {
     func buildRequest(with baseUrl: String) -> URLRequest? {
         let urlString = "\(baseUrl)/\(queryString);type=json"
         guard let url = URL(string: urlString) else {
+            return nil
+        }
+        return URLRequest(url: url, cachePolicy:NSURLRequest.CachePolicy.reloadIgnoringCacheData)
+    }
+    
+    func getRefreshRequest(with urlStr: String) -> URLRequest? {
+        guard let url = URL(string: urlStr) else {
             return nil
         }
         return URLRequest(url: url, cachePolicy:NSURLRequest.CachePolicy.reloadIgnoringCacheData)
