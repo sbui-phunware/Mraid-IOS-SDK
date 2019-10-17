@@ -101,7 +101,7 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
         })
     }
     
-    private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         // Capture window.open (clickthroughs) and redirect
         webView.load(navigationAction.request)
         return nil

@@ -17,8 +17,8 @@ import AdSupport
     // Ad Details
     public var accountId: Int = 0
     public var zoneId: Int = 0
-    public var width: Int = 0
-    public var height: Int = 0
+    public var width: Int? = 0
+    public var height: Int? = 0
     public var keywords: [String] = []
     public var click: String?
     public var advertisingId : String?
@@ -76,8 +76,8 @@ import AdSupport
         super.init()
         self.accountId = accountId
         self.zoneId = zoneId
-        self.width = width
-        self.height = height
+        self.width = width == 0 ? nil : width
+        self.height = height == 0 ? nil : height
         self.keywords = keywords
         self.click = click
         self.personalizedAdsEnabled = personalizedAdsEnabled

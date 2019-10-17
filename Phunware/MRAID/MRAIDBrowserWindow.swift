@@ -84,13 +84,13 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
     
     private func addNavigationButtons(){
         btnClose = UIButton()
-        btnClose!.addTarget(self, action: #selector(onCloseClicked), for:UIControlEvents.touchUpInside)
+        btnClose!.addTarget(self, action: #selector(onCloseClicked), for:UIControl.Event.touchUpInside)
         btnForward = UIButton()
-        btnForward!.addTarget(self, action: #selector(onForwardClicked), for:UIControlEvents.touchUpInside)
+        btnForward!.addTarget(self, action: #selector(onForwardClicked), for:UIControl.Event.touchUpInside)
         btnBack = UIButton()
-        btnBack!.addTarget(self, action: #selector(onBackClicked), for:UIControlEvents.touchUpInside)
+        btnBack!.addTarget(self, action: #selector(onBackClicked), for:UIControl.Event.touchUpInside)
         btnReload = UIButton()
-        btnReload!.addTarget(self, action: #selector(onReloadClicked), for:UIControlEvents.touchUpInside)
+        btnReload!.addTarget(self, action: #selector(onReloadClicked), for:UIControl.Event.touchUpInside)
         
         btnClose?.translatesAutoresizingMaskIntoConstraints = false
         btnReload?.translatesAutoresizingMaskIntoConstraints = false
@@ -99,10 +99,10 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
         dividerLeft.translatesAutoresizingMaskIntoConstraints = false
         dividerRight.translatesAutoresizingMaskIntoConstraints = false
         
-        btnForward!.setImage(UIImage(named: "navigationForward", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControlState.normal)
-        btnBack!.setImage(UIImage(named: "navigationBack", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControlState.normal)
-        btnReload!.setImage(UIImage(named: "navigationReload", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControlState.normal)
-        btnClose!.setImage(UIImage(named: "navigationClose", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControlState.normal)
+        btnForward!.setImage(UIImage(named: "navigationForward", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControl.State.normal)
+        btnBack!.setImage(UIImage(named: "navigationBack", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControl.State.normal)
+        btnReload!.setImage(UIImage(named: "navigationReload", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControl.State.normal)
+        btnClose!.setImage(UIImage(named: "navigationClose", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for:UIControl.State.normal)
         
         navigationView!.addSubview(btnClose!)
         navigationView!.addSubview(btnForward!)
@@ -122,7 +122,7 @@ public class MRAIDBrowserWindow : UIViewController, WKUIDelegate, WKNavigationDe
         webView = nil
         view.removeFromSuperview()
         view = nil
-        removeFromParentViewController()
+        removeFromParent()
         onCloseDelegate()
     }
     

@@ -23,7 +23,7 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         if(placement.body != nil){
             var renderBody = placement.body!
             MRAIDUtilities.validateHTML(&renderBody)
-            parentViewController.addChildViewController(self)
+            parentViewController.addChild(self)
             
             mraidHandler = MRAIDHandler()
             mraidHandler.initialize(parentViewController: self, mraidDelegate: self)
@@ -52,10 +52,10 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
     // webview should always be the same size as the main view
     private func setInitialConstraints(){
         let webViewSizeConstraints = [
-            NSLayoutConstraint(item:view, attribute: .width, relatedBy: .equal, toItem: mraidView, attribute: .width, multiplier:1.0, constant:0),
-            NSLayoutConstraint(item:view, attribute: .height, relatedBy: .equal, toItem: mraidView, attribute: .height, multiplier:1.0, constant:0),
-            NSLayoutConstraint(item:view, attribute: .centerX, relatedBy: .equal, toItem: mraidView, attribute: .centerX, multiplier:1.0, constant:0),
-            NSLayoutConstraint(item:view, attribute: .centerY, relatedBy: .equal, toItem: mraidView, attribute: .centerY, multiplier:1.0, constant:0),
+            NSLayoutConstraint(item:view as Any, attribute: .width, relatedBy: .equal, toItem: mraidView, attribute: .width, multiplier:1.0, constant:0),
+            NSLayoutConstraint(item:view as Any, attribute: .height, relatedBy: .equal, toItem: mraidView, attribute: .height, multiplier:1.0, constant:0),
+            NSLayoutConstraint(item:view as Any, attribute: .centerX, relatedBy: .equal, toItem: mraidView, attribute: .centerX, multiplier:1.0, constant:0),
+            NSLayoutConstraint(item:view as Any, attribute: .centerY, relatedBy: .equal, toItem: mraidView, attribute: .centerY, multiplier:1.0, constant:0),
             ]
         view.addConstraints(webViewSizeConstraints)
     }
@@ -64,7 +64,7 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
     
     public func display(){
         if(mraidHandler != nil){
-            removeFromParentViewController()
+            removeFromParent()
             setRootController(self)
             mraidHandler.setCurrentPosition(view.frame)
             mraidHandler.setIsViewable(true)
@@ -93,7 +93,7 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         browser.onClose(perform:{() in
             // close code?
         })
-        addChildViewController(browser)
+        addChild(browser)
         view.addSubview(browser.view)
         self.placement!.recordClick()
     }
@@ -147,18 +147,18 @@ public class PWMRAIDInterstitial : UIViewController, MRAIDDelegate {
         
         let custom = mraidHandler.getExpandProperties()?.useCustomClose
         if(custom != nil && custom == false){
-            closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
-            closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
-            closeButton.setTitle("X", for:UIControlState.normal)
+            closeButton.setTitleColor(UIColor.white, for:UIControl.State.normal)
+            closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControl.State.normal)
+            closeButton.setTitle("X", for:UIControl.State.normal)
             closeButton.titleLabel!.textAlignment = NSTextAlignment.center
             closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
         }
-        closeButton.addTarget(self, action: action, for:UIControlEvents.touchUpInside)
+        closeButton.addTarget(self, action: action, for:UIControl.Event.touchUpInside)
         
         view.addSubview(closeButton)
         if #available(iOS 11.0, *) {
             let guide = view.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([closeButton.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
+            NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0)])
         } else {
             NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor)])
         }

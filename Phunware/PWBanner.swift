@@ -119,7 +119,7 @@ import Foundation
             self.imageView!.removeFromSuperview()
         }
         if(self.viewController != nil) {
-            self.viewController!.removeFromParentViewController()
+            self.viewController!.removeFromParent()
             self.viewController!.view.removeFromSuperview()
         }
     }

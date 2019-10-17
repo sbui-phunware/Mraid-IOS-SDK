@@ -212,7 +212,8 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
             if(respectsSafeArea){
                 if #available(iOS 11.0, *) {
                     let guide = to.safeAreaLayoutGuide
-                    NSLayoutConstraint.activate([closeButton.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
+                    NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0)])
+//                    NSLayoutConstraint.activate([closeButton.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
                 } else {
                     if let anchor = parentVC?.topLayoutGuide.bottomAnchor{
                         NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: anchor)])
@@ -226,7 +227,7 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
             if(respectsSafeArea){
                 if #available(iOS 11.0, *) {
                     let guide = to.safeAreaLayoutGuide
-                    NSLayoutConstraint.activate([closeButton.topAnchor.constraintEqualToSystemSpacingBelow(guide.topAnchor, multiplier: 1.0)])
+                    NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0)])
                 } else {
                     if let anchor = parentVC?.topLayoutGuide.bottomAnchor{
                         NSLayoutConstraint.activate([closeButton.topAnchor.constraint(equalTo: anchor)])
@@ -250,15 +251,15 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
         }
         
         if(showButton){ // resized views will create a close button region, but not display it as per MRAID spec
-            closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
-            closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
-            closeButton.setTitle("X", for:UIControlState.normal)
+            closeButton.setTitleColor(UIColor.white, for:UIControl.State.normal)
+            closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControl.State.normal)
+            closeButton.setTitle("X", for:UIControl.State.normal)
             closeButton.titleLabel!.textAlignment = NSTextAlignment.center
             closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
         }
         
         self.closeButton = closeButton
-        closeButton.addTarget(self, action: action, for:UIControlEvents.touchUpInside)
+        closeButton.addTarget(self, action: action, for:UIControl.Event.touchUpInside)
         
     }
     
@@ -695,13 +696,13 @@ public class MRAIDHandler : NSObject, WKUIDelegate, WKNavigationDelegate {
     }
     
     func showErrorDialog(_ msg:String){
-        let alert = UIAlertController(title: "Notice", message: msg, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Notice", message: msg, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title:"Close", style: .default, handler:nil))
         parentVC!.present(alert, animated:true)
     }
     
     func showConfirmationDialogue(title:String, message:String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title:"Close", style: .default, handler:nil))
         parentVC!.present(alert, animated:true)
     }
