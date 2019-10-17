@@ -44,7 +44,7 @@ class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
     }
     
     @IBAction func onClickBanner(_ sender: Any) {
-        let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:nil, height:nil, customExtras:nil)
+        let config = PlacementRequestConfig(accountId: 174812, zoneId: 335387, width:0, height:0, customExtras:nil)
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
@@ -57,7 +57,7 @@ class ViewController: UIViewController, PWInterstitialDelegate, PWVASTDelegate {
                     return
                 }
                 self.banner?.destroy()
-                self.banner = PWBanner(placement:placements[0], parentViewController:self, position:Positions.BOTTOM_CENTER)
+                self.banner = PWBanner(placement:placements[0], parentViewController:self, position:Positions.BOTTOM_CENTER, respectSafeAreaLayoutGuide:true)
             case .badRequest(let statusCode, let responseBody):
                 return
             case .invalidJson(let responseBody):

@@ -23,7 +23,7 @@ public class PWBannerView: UIViewController, UIWebViewDelegate, UIGestureRecogni
         webView.isOpaque = true
         webView.isUserInteractionEnabled = true
         webView.loadHTMLString(body, baseURL:nil)
-        webView.scrollView.contentInset = UIEdgeInsetsMake(-8.0, -8.0, 8, 8)
+        webView.scrollView.contentInset = UIEdgeInsets(top: -8.0, left: -8.0, bottom: 8, right: 8)
         let gesture:UITapGestureRecognizer = UITapGestureRecognizer(target:self, action:nil)
         gesture.delegate = self
         webView.addGestureRecognizer(gesture)
@@ -38,7 +38,7 @@ public class PWBannerView: UIViewController, UIWebViewDelegate, UIGestureRecogni
         }
     }
     
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool{
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
         let url = request.url
         if(url != nil && url!.absoluteString != "about:blank"){
             if(

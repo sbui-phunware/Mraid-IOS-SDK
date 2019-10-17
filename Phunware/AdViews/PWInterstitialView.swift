@@ -85,7 +85,7 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
             webView.scrollView.bounces = false
         }
         
-        webView.scrollView.contentInset = UIEdgeInsetsMake(-8.0, -8.0, 8, 8)
+        webView.scrollView.contentInset = UIEdgeInsets(top: -8.0, left: -8.0, bottom: 8, right: 8)
       
         webView.delegate = self
         webView.dataDetectorTypes = UIDataDetectorTypes.all
@@ -135,13 +135,13 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
             if(webView != nil){
                 parentViewController.view.addSubview(bgView!)
                 parentViewController.view.addSubview(webView!)
-                parentViewController.addChildViewController(self)
+                parentViewController.addChild(self)
                 addCloseButton(parentViewController)
                 displayed = true
             }
             else if(imageView != nil){
                 parentViewController.view.addSubview(imageView!);
-                parentViewController.addChildViewController(self)
+                parentViewController.addChild(self)
                 addCloseButton(parentViewController)
                 displayed = true
             }
@@ -163,13 +163,13 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
         closeButton = UIButton(frame:buttonRect)
         closeButton!.layer.cornerRadius = 0
         closeButton!.layer.backgroundColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.8).cgColor
-        closeButton!.setTitleColor(UIColor.white, for:UIControlState.normal)
+        closeButton!.setTitleColor(UIColor.white, for:UIControl.State.normal)
         if(closeTimer > 0){
             setCloseButtonText(String(closeTimer), size:20.0)
             countdownTimer = Timer.scheduledTimer(timeInterval: 1, target:self, selector:(#selector(updateTimer)), userInfo: nil, repeats:true)
         }else{
             setCloseButtonText("X", size:24.0)
-            closeButton!.addTarget(self, action: #selector(onCloseClicked), for:UIControlEvents.touchUpInside)
+            closeButton!.addTarget(self, action: #selector(onCloseClicked), for:UIControl.Event.touchUpInside)
         }
     
         parentVC.view.addSubview(closeButton!)
@@ -186,7 +186,7 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
     }
     
     func setCloseButtonText(_ text:String, size:CGFloat = 20.0){
-        closeButton!.setTitle(text as String, for:UIControlState.normal)
+        closeButton!.setTitle(text as String, for:UIControl.State.normal)
         closeButton!.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:size), size: size)
     }
     
@@ -194,7 +194,7 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
         fadeAmountPerTick = closeFadeRate / closeFadeTime
         countdownTimer?.invalidate()
         countdownTimer = nil
-        closeButton!.addTarget(self, action: #selector(onCloseClicked), for:UIControlEvents.touchUpInside)
+        closeButton!.addTarget(self, action: #selector(onCloseClicked), for:UIControl.Event.touchUpInside)
         fadeTimer = Timer.scheduledTimer(timeInterval: TimeInterval(closeFadeRate), target:self, selector:(#selector(updateTimerFade)), userInfo: nil, repeats:true)
     }
     
@@ -218,11 +218,11 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
         imageView?.removeFromSuperview()
         imageView = nil
         closeButton?.removeFromSuperview()
-        self.removeFromParentViewController()
+        self.removeFromParent()
         delegate.interstitialClosed(self.interstitial)
     }
     
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool{
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
         let url = request.url
         if(url != nil && url!.absoluteString != "about:blank"){
             if(url!.absoluteString.range(of:"ssp-r.phunware.com") == nil){

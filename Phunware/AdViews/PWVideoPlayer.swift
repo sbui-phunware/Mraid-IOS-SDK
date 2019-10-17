@@ -44,7 +44,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         
         view.addSubview(videoView!)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     public func initialize(webView:WKWebView, onClose:@escaping()->Void){
@@ -64,7 +64,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         
         view.addSubview(videoView!)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     public func setOrientationMask(_ mask:UIInterfaceOrientationMask){
@@ -92,7 +92,7 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         NSLog("Webview did finish")
     }
     
-    private func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         // Capture window.open (clickthroughs) and redirect
         webView.load(navigationAction.request)
         return nil
@@ -200,13 +200,13 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         }
         
         closeButton.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-        closeButton.setTitleColor(UIColor.white, for:UIControlState.normal)
-        closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControlState.normal)
-        closeButton.setTitle("X", for:UIControlState.normal)
+        closeButton.setTitleColor(UIColor.white, for:UIControl.State.normal)
+        closeButton.setBackgroundImage(UIImage(named:"closeButtonBG", in: Bundle(identifier:"phunware.ios.mraid.sdk"), compatibleWith:nil), for: UIControl.State.normal)
+        closeButton.setTitle("X", for:UIControl.State.normal)
         closeButton.titleLabel!.textAlignment = NSTextAlignment.center
         closeButton.titleLabel!.font = UIFont.init(descriptor: UIFontDescriptor(name:"Gill Sans", size:24.0), size: 24.0)
     
-        closeButton.addTarget(self, action: #selector(close), for:UIControlEvents.touchUpInside)
+        closeButton.addTarget(self, action: #selector(close), for:UIControl.Event.touchUpInside)
 
         
         videoView!.addSubview(closeButton)
@@ -221,8 +221,8 @@ public class PWVideoPlayer: UIViewController, WKUIDelegate, WKNavigationDelegate
         endCardActive = false
         videoView!.removeFromSuperview()
         videoView = nil
-        removeFromParentViewController()
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        removeFromParent()
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         dismiss(animated:false)
         onClose()
     }
