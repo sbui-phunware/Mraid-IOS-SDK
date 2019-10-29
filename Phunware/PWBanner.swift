@@ -98,7 +98,7 @@ import Foundation
         if(self.placement!.refreshTime != nil){
             if(self.placementRequestConfig == nil){
                 NSLog("Phunware", "This banner will not refresh unless you construct it with a PlacementRequestConfig object");
-            } else {
+            } else if (self.timer != nil && !self.timer!.isValid) {
                 let interval = Double(self.placement!.refreshTime!)
                 timer = Timer.scheduledTimer(timeInterval: interval!, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
             }
@@ -130,7 +130,7 @@ import Foundation
             return;
         }
         if(self.placement?.refreshUrl == nil){
-            self.timer!.invalidate()
+            self.timer?.invalidate()
             return
         }
         if(self.placement != nil){
@@ -160,9 +160,6 @@ import Foundation
                             self.imageView!.frame = self.getFrameFromPlacement()
                         }
                     }
-                    
-                    //                self.banner?.destroy()
-                //                self.banner = PWBanner(placement:placements[0], container:container, respectSafeAreaLayoutGuide: false, placementRequestConfig:config)
                 case .badRequest(let statusCode, let responseBody):
                     return
                 case .invalidJson(let responseBody):
