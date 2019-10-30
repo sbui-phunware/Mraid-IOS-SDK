@@ -11,6 +11,7 @@
 		BE3A2D8D22A82C2500F12745 /* Phunware.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE940E4222A82BEB0012DCEA /* Phunware.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE3A2D9222A85D8900F12745 /* SDKConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3A2D9122A85D8900F12745 /* SDKConsumer.swift */; };
 		BE3A2D9522A85EA700F12745 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3A2D9422A85EA700F12745 /* Extensions.swift */; };
+		BE5BB45C2369F65000083D3A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE5BB45B2369F65000083D3A /* SecondViewController.swift */; };
 		BE940E2C22A82BA10012DCEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE940E2B22A82BA10012DCEA /* AppDelegate.swift */; };
 		BE940E2E22A82BA10012DCEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE940E2D22A82BA10012DCEA /* ViewController.swift */; };
 		BE940E3122A82BA10012DCEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE940E2F22A82BA10012DCEA /* Main.storyboard */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		BE3A2D9122A85D8900F12745 /* SDKConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKConsumer.swift; sourceTree = "<group>"; };
 		BE3A2D9422A85EA700F12745 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BE5BB45B2369F65000083D3A /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		BE940E2822A82BA10012DCEA /* SDKTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE940E2B22A82BA10012DCEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE940E2D22A82BA10012DCEA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				BE940E3222A82BA20012DCEA /* Assets.xcassets */,
 				BE940E3422A82BA20012DCEA /* LaunchScreen.storyboard */,
 				BE940E3722A82BA20012DCEA /* Info.plist */,
+				BE5BB45B2369F65000083D3A /* SecondViewController.swift */,
 			);
 			path = SDKTester;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				BE3A2D9222A85D8900F12745 /* SDKConsumer.swift in Sources */,
 				BE940E2E22A82BA10012DCEA /* ViewController.swift in Sources */,
 				BE940E2C22A82BA10012DCEA /* AppDelegate.swift in Sources */,
+				BE5BB45C2369F65000083D3A /* SecondViewController.swift in Sources */,
 				BE3A2D9522A85EA700F12745 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
