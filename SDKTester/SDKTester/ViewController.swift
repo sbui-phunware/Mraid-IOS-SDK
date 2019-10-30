@@ -63,6 +63,10 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
         sdk.setLoggingFunction(log)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        sdk.banner?.destroy()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         txtAccountID.delegate = self

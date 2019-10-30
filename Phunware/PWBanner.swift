@@ -113,7 +113,7 @@ import Foundation
         return CGRect(x:x, y:y, width:CGFloat(self.placement!.width), height:CGFloat(self.placement!.height));
     }
     
-    public func destroy(){
+    @objc public func destroy(){
         self.timer?.invalidate()
         if(self.imageView != nil) {
             self.imageView!.removeFromSuperview()
@@ -137,28 +137,33 @@ import Foundation
             Phunware.refreshPlacement(with:self.placement!, config:self.placementRequestConfig!) { response in
                 switch response {
                 case .success(_ , let placements):
-                    guard placements.count == 1 else {
-                        return
-                    }
-                    guard placements[0].isValid else {
-                        return
-                    }
-                    self.placement = placements[0]
-                    self.placement!.getImageView { imageView in
-                        let view = self.imageView!.superview
-                        self.imageView!.removeFromSuperview()
-                        self.imageView = imageView
-                        view?.addSubview(self.imageView!)
-                        self.placement!.recordImpression()
-                        if(self.refreshToContainer){
-                            self.imageView!.frame = CGRect(x:0, y:0, width:view!.frame.width, height:view!.frame.height)
-                            NSLayoutConstraint.activate([
-                                self.imageView!.heightAnchor.constraint(equalTo:view!.heightAnchor),
-                                self.imageView!.widthAnchor.constraint(equalTo:view!.widthAnchor)
-                                ])
-                        }else{
-                            self.imageView!.frame = self.getFrameFromPlacement()
+                    do {
+                        guard placements.count == 1 else {
+                            return
                         }
+                        guard placements[0].isValid else {
+                            return
+                        }
+                        self.placement = placements[0]
+                        try self.placement!.getImageView { imageView in
+                            let view = self.imageView!.superview
+                            self.imageView!.removeFromSuperview()
+                            self.imageView = imageView
+                            view?.addSubview(self.imageView!)
+                            self.placement!.recordImpression()
+                            if(self.refreshToContainer){
+                                self.imageView!.frame = CGRect(x:0, y:0, width:view!.frame.width, height:view!.frame.height)
+                                NSLayoutConstraint.activate([
+                                    self.imageView!.heightAnchor.constraint(equalTo:view!.heightAnchor),
+                                    self.imageView!.widthAnchor.constraint(equalTo:view!.widthAnchor)
+                                    ])
+                            }else{
+                                self.imageView!.frame = self.getFrameFromPlacement()
+                            }
+                        }
+                    } catch {
+                        // Something is missing in our banner.  (Maybe reference to it was lost)
+                        self.destroy()
                     }
                 case .badRequest(let statusCode, let responseBody):
                     return
