@@ -146,19 +146,28 @@ import Foundation
                         }
                         self.placement = placements[0]
                         try self.placement!.getImageView { imageView in
+                            if(self.imageView == nil){
+                                self.destroy()
+                                return
+                            }
                             let view = self.imageView!.superview
-                            self.imageView!.removeFromSuperview()
-                            self.imageView = imageView
-                            view?.addSubview(self.imageView!)
-                            self.placement!.recordImpression()
-                            if(self.refreshToContainer){
-                                self.imageView!.frame = CGRect(x:0, y:0, width:view!.frame.width, height:view!.frame.height)
-                                NSLayoutConstraint.activate([
-                                    self.imageView!.heightAnchor.constraint(equalTo:view!.heightAnchor),
-                                    self.imageView!.widthAnchor.constraint(equalTo:view!.widthAnchor)
-                                    ])
+                            if(view == nil || imageView == nil){
+                                self.destroy()
+                                return
                             }else{
-                                self.imageView!.frame = self.getFrameFromPlacement()
+                                self.imageView!.removeFromSuperview()
+                                self.imageView = imageView
+                                view?.addSubview(self.imageView!)
+                                self.placement!.recordImpression()
+                                if(self.refreshToContainer){
+                                    self.imageView!.frame = CGRect(x:0, y:0, width:view!.frame.width, height:view!.frame.height)
+                                    NSLayoutConstraint.activate([
+                                        self.imageView!.heightAnchor.constraint(equalTo:view!.heightAnchor),
+                                        self.imageView!.widthAnchor.constraint(equalTo:view!.widthAnchor)
+                                        ])
+                                }else{
+                                    self.imageView!.frame = self.getFrameFromPlacement()
+                                }
                             }
                         }
                     } catch {
