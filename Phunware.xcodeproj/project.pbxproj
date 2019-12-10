@@ -44,6 +44,7 @@
 		BE89B11121C86FEC00923CED /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6792A3215176E6009A1409 /* StringExtensions.swift */; };
 		BE92E5FB225E80BE0050BC3B /* PWVASTDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */; };
 		BEA1FEB821CAC40000152B15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEA7AAD620C5DD56008E43B8 /* Assets.xcassets */; };
+		BEA418F623A0339B006D6768 /* PostMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA418F523A0339B006D6768 /* PostMessageHandler.swift */; };
 		BEF4A5962277694A0078E4B3 /* PWVASTCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF4A5952277694A0078E4B3 /* PWVASTCompanion.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		BE921E6B2130753E00F49805 /* PWMRAIDInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWMRAIDInterstitial.swift; sourceTree = "<group>"; };
 		BE921E6D213082EF00F49805 /* MRAIDInterstitialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDInterstitialDelegate.swift; sourceTree = "<group>"; };
 		BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTDelegate.swift; sourceTree = "<group>"; };
+		BEA418F523A0339B006D6768 /* PostMessageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMessageHandler.swift; sourceTree = "<group>"; };
 		BEA7AAD320C1E54C008E43B8 /* PWInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWInterstitialView.swift; sourceTree = "<group>"; };
 		BEA7AAD620C5DD56008E43B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Phunware/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		BEAF2A85212DF04D00865179 /* MRAIDHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDHandler.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */,
 				BEF4A5952277694A0078E4B3 /* PWVASTCompanion.swift */,
 				BE69690A227B651500381273 /* PWVASTParser.swift */,
+				BEA418F523A0339B006D6768 /* PostMessageHandler.swift */,
 			);
 			path = VAST;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				BE89B0FC21C86FEC00923CED /* MRAIDUtilities.swift in Sources */,
 				BE89B10621C86FEC00923CED /* Session.swift in Sources */,
 				BE89B0F621C86FD500923CED /* Placement+ImageView.swift in Sources */,
+				BEA418F623A0339B006D6768 /* PostMessageHandler.swift in Sources */,
 				BE89B11121C86FEC00923CED /* StringExtensions.swift in Sources */,
 				BE89B10021C86FEC00923CED /* PWMRAIDInterstitial.swift in Sources */,
 				BE89B0F521C86FD500923CED /* Placement.swift in Sources */,

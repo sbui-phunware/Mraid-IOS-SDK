@@ -16,7 +16,7 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
     internal var endCardCompanion:PWVASTCompanion? = nil
     private var ready:Bool = false
     internal var closeButtonRequired:Bool = false
-
+    internal var postMessageHandler:PostMessageHandler!
     
     private let baseURL = "http://ssp-r.phunware.com"
     
@@ -31,6 +31,8 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
         self.publisherID = publisherID
         self.poster = poster
         self.vastDelegate = delegate
+        self.postMessageHandler = PostMessageHandler()
+        self.postMessageHandler.initialize(vast:self)
         if(orientationMask != nil){
             self.orientationMask = orientationMask!
         }
@@ -50,8 +52,8 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
                 <meta name="viewport" content="initial-scale=1.0" />
                 <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
                 <script src="http://vjs.zencdn.net/4.12/video.js"></script>
-                <link href="\(baseURL)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css?v=5" rel="stylesheet">
-                <script src="\(baseURL)/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.min.js?v=10"></script>
+                <link href="\(baseURL)/videojs-vast-vpaid/bin/videojs.vast.vpaid.min.css?v=7" rel="stylesheet">
+                <script src="\(baseURL)/videojs-vast-vpaid/bin/videojs_4.vast.vpaid.js?v=17"></script>
             </head>
             <body style="margin:0px; background-color:black">
             <video id="av_video" class="video-js vjs-default-skin"
@@ -63,7 +65,7 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
         str += "data-setup='{ "
         str += "\"plugins\": { "
         str += "\"vastClient\": { "
-        str += "\"adTagUrl\": \"\(baseURL)/vasttemp.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
+        str += "\"adTagUrl\": \"\(baseURL)/vast.spark?setID=\(self.zoneID!)&ID=\(self.accountID!)&pid=\(self.publisherID!)\", "
         str += "\"adCancelTimeout\": 5000, "
         str += "\"adsEnabled\": true "
         str += "} "
@@ -114,7 +116,11 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
     public func preload(container:UIView){
         Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(timeout), userInfo: nil, repeats: false)
         let config = WKWebViewConfiguration()
+        let contentController = WKUserContentController()
+        contentController.add(self.postMessageHandler, name: "vastPlayerMessageHandler")
+        
         config.allowsInlineMediaPlayback = true
+        config.userContentController = contentController
         config.mediaTypesRequiringUserActionForPlayback = WKAudiovisualMediaTypes.init(rawValue: 0)
         
         webView = WKWebView(frame:CGRect(x:0, y:0, width:0, height:0), configuration: config)
@@ -126,6 +132,7 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
         let body = self.getVideoJSMarkup()
         webView!.loadHTMLString(body, baseURL:URL(string:"http://ssp-r.phunware.com/"))
     }
+
     
     @objc func timeout(){
         if(!self.ready){
@@ -152,29 +159,38 @@ public class PWVASTVideo : NSObject, WKUIDelegate, WKNavigationDelegate {
         self.webView = nil
     }
     
+       
     public func webView(_ webView: WKWebView,
                         decidePolicyFor navigationAction: WKNavigationAction,
                         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let url = navigationAction.request.url?.absoluteString
         if(url != nil && !url!.starts(with:"about:blank") && url! != "https://ssp-r.phunware.com/" && url! != "http://ssp-r.phunware.com/"){
-            if (url!.range(of:"vast://") != nil){
-                if(url!.range(of:"vastresponse?xml=") != nil){
-                    let range = url!.range(of:"vast://vastresponse?xml=")
-                    let from = range?.upperBound
-                    let to = url!.endIndex
-                    let xml = String(url![from!..<to])
-                    PWVASTParser(self).parseXML(xml.decodeUrl()!)
-                }else{
-                    let range = url!.range(of:"vast://")
-                    let from = range?.upperBound
-                    let to = url!.endIndex
-                    let event = String(url![from!..<to])
-                    handleEvent(event)
-                }
-            }
+//            if (url!.range(of:"vast://") != nil){
+//                if(url!.range(of:"vastresponse?xml=") != nil){
+//                    let range = url!.range(of:"vast://vastresponse?xml=")
+//                    let from = range?.upperBound
+//                    let to = url!.endIndex
+//                    let xml = String(url![from!..<to])
+//                    PWVASTParser(self).parseXML(xml.decodeUrl()!)
+//                }else{
+//                    let range = url!.range(of:"vast://")
+//                    let from = range?.upperBound
+//                    let to = url!.endIndex
+//                    let event = String(url![from!..<to])
+//                    handleEvent(event)
+//                }
+//            }
         }
         decisionHandler(.allow)
         return
+    }
+    
+    public func setVastXML(_ body:String){
+        let range = body.range(of:"vast://vastresponse?xml=")
+        let from = range?.upperBound
+        let to = body.endIndex
+        let xml = String(body[from!..<to])
+        PWVASTParser(self).parseXML(xml.decodeUrl()!)
     }
     
     func handleEvent(_ event:String){
