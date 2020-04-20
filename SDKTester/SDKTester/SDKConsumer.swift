@@ -75,6 +75,7 @@ class SDKConsumer : NSObject {
     
     func getBanner(accountID:Int, zoneID:Int, container:UIView){
         let config = PlacementRequestConfig(accountId: accountID, zoneId: zoneID, width:0, height:0, customExtras:nil)
+        config.personalizedAdsEnabled = true // <-- SDK user should check for permission here
         Phunware.requestPlacement(with: config) { response in
             switch response {
             case .success(_ , let placements):
