@@ -22,7 +22,7 @@ import AdSupport
     public var keywords: [String] = []
     public var click: String?
     public var advertisingId : String?
-    public var personalizedAdsEnabled: Bool = false
+    @objc public var personalizedAdsEnabled: Bool = false
     public var doNotTrack : Int?
     
     // Device Details
