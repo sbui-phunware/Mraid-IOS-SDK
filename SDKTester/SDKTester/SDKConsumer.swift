@@ -120,7 +120,7 @@ class SDKConsumer : NSObject {
                     self.log("Error - Invalid placement")
                     return
                 }
-                if(placements[0].body != nil && placements[0].body != ""){
+                if((placements[0].body != nil && placements[0].body != "") || placements[0].imageUrl != nil){
                     self.interstitial = PWInterstitial(placement:placements[0], parentViewController:self.parentViewController, delegate:self.interstitialDelegate!, respectSafeAreaLayoutGuide:true)
                 }
             default:

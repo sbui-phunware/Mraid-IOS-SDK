@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */; };
 		BE69690B227B651500381273 /* PWVASTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE69690A227B651500381273 /* PWVASTParser.swift */; };
+		BE87D9442538D72A00039016 /* FrequencyCappingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9432538D72A00039016 /* FrequencyCappingData.swift */; };
+		BE87D9462538D74200039016 /* FrequencyCappingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9452538D74200039016 /* FrequencyCappingManager.swift */; };
+		BE87D9482538D77800039016 /* FrequencyCappingPOSTData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9472538D77800039016 /* FrequencyCappingPOSTData.swift */; };
+		BE87D94A2538DB0200039016 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9492538DB0200039016 /* UserAgent.swift */; };
 		BE89B0EF21C86FD500923CED /* Phunware.h in Headers */ = {isa = PBXBuildFile; fileRef = BEBE2571207C1DE600D7C655 /* Phunware.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE89B0F021C86FD500923CED /* Phunware.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBE2573207C1DE600D7C655 /* Phunware.swift */; };
 		BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6792A521517937009A1409 /* PWBanner.swift */; };
@@ -62,6 +66,10 @@
 		BE6792A521517937009A1409 /* PWBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWBanner.swift; sourceTree = "<group>"; };
 		BE69690A227B651500381273 /* PWVASTParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTParser.swift; sourceTree = "<group>"; };
 		BE6DEBD320D99F6F00145E64 /* PWImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWImageView.swift; sourceTree = "<group>"; };
+		BE87D9432538D72A00039016 /* FrequencyCappingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyCappingData.swift; sourceTree = "<group>"; };
+		BE87D9452538D74200039016 /* FrequencyCappingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyCappingManager.swift; sourceTree = "<group>"; };
+		BE87D9472538D77800039016 /* FrequencyCappingPOSTData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyCappingPOSTData.swift; sourceTree = "<group>"; };
+		BE87D9492538DB0200039016 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		BE921E6B2130753E00F49805 /* PWMRAIDInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWMRAIDInterstitial.swift; sourceTree = "<group>"; };
 		BE921E6D213082EF00F49805 /* MRAIDInterstitialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDInterstitialDelegate.swift; sourceTree = "<group>"; };
 		BE92E5FA225E80BE0050BC3B /* PWVASTDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWVASTDelegate.swift; sourceTree = "<group>"; };
@@ -158,6 +166,16 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		BE87D9422538D70C00039016 /* FrequencyCapping */ = {
+			isa = PBXGroup;
+			children = (
+				BE87D9432538D72A00039016 /* FrequencyCappingData.swift */,
+				BE87D9452538D74200039016 /* FrequencyCappingManager.swift */,
+				BE87D9472538D77800039016 /* FrequencyCappingPOSTData.swift */,
+			);
+			path = FrequencyCapping;
+			sourceTree = "<group>";
+		};
 		BE9FF3DF210932A70010AED8 /* MRAID */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +208,7 @@
 		BEBE2556207C1D5E00D7C655 /* Phunware */ = {
 			isa = PBXGroup;
 			children = (
+				BE87D9422538D70C00039016 /* FrequencyCapping */,
 				BE3B73E42229A2AB00F06A13 /* VAST */,
 				BE67929C21431EF7009A1409 /* Assets */,
 				BE9FF3DF210932A70010AED8 /* MRAID */,
@@ -209,6 +228,7 @@
 				BEBE2576207C1DE700D7C655 /* PlacementRequestConfig.swift */,
 				BEBE257E207C1DE700D7C655 /* Response.swift */,
 				BEA7AAD620C5DD56008E43B8 /* Assets.xcassets */,
+				BE87D9492538DB0200039016 /* UserAgent.swift */,
 			);
 			path = Phunware;
 			sourceTree = "<group>";
@@ -310,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE89B0F121C86FD500923CED /* PWBanner.swift in Sources */,
+				BE87D9462538D74200039016 /* FrequencyCappingManager.swift in Sources */,
 				BE89B10121C86FEC00923CED /* PWInterstitialDelegate.swift in Sources */,
 				BE92E5FB225E80BE0050BC3B /* PWVASTDelegate.swift in Sources */,
 				BEF4A5962277694A0078E4B3 /* PWVASTCompanion.swift in Sources */,
@@ -318,9 +339,11 @@
 				BE89B10921C86FEC00923CED /* RequestManager.swift in Sources */,
 				BE89B10C21C86FEC00923CED /* PWInterstitialView.swift in Sources */,
 				BE89B0F321C86FD500923CED /* PWErrorCode.swift in Sources */,
+				BE87D94A2538DB0200039016 /* UserAgent.swift in Sources */,
 				BE89B10321C86FEC00923CED /* MRAIDInterstitialDelegate.swift in Sources */,
 				BE69690B227B651500381273 /* PWVASTParser.swift in Sources */,
 				BE89B10821C86FEC00923CED /* PlacementResponseOperation.swift in Sources */,
+				BE87D9482538D77800039016 /* FrequencyCappingPOSTData.swift in Sources */,
 				BE89B10721C86FEC00923CED /* PlacementRequestOperation.swift in Sources */,
 				BE89B0FE21C86FEC00923CED /* MRAIDConstants.swift in Sources */,
 				BE89B0FF21C86FEC00923CED /* PWMRAIDBanner.swift in Sources */,
@@ -328,6 +351,7 @@
 				BE89B10521C86FEC00923CED /* ResponseCollector.swift in Sources */,
 				BE89B10D21C86FEC00923CED /* PWImageView.swift in Sources */,
 				BE89B10E21C86FEC00923CED /* PWVideoPlayer.swift in Sources */,
+				BE87D9442538D72A00039016 /* FrequencyCappingData.swift in Sources */,
 				BE89B0FD21C86FEC00923CED /* MRAIDBrowserWindow.swift in Sources */,
 				BE89B11021C86FEC00923CED /* UIDeviceExtensions.swift in Sources */,
 				BE89B0F921C86FD500923CED /* Response.swift in Sources */,
