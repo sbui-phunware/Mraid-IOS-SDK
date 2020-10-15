@@ -27,6 +27,30 @@ Update with instructions
 Installation of phunware-ios-sdk can be done manually by building and copying the framework into your project.
 Usage
 
+### Setup
+
+If you plan to use advanced ad types such as MRAID, your app will need permissions for certain features such as:
+
+- Telephony (Send SMS)
+- Photo Library (Save images to gallery)
+- Calendar Access (Create reminders)
+
+You will also need to alow Arbitrary Loads for certain resources.
+
+In your `info.plist` add:
+
+`App Transport Security Settings > Allow Arbitrary Loads > YES`
+
+### Initialization
+
+In your main view controller, inside of viewDidLoad(), initialize the Phunware class using the main view for the app.
+
+```
+override func viewDidLoad() {
+    Phunware.initialize(mainView: self.view)
+}
+```
+
 ### Banners
 
 Banners will be displayed immediately once they are returned from Phunware’s ad server.  
