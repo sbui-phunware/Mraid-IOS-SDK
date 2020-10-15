@@ -69,6 +69,7 @@ class ViewController: UIViewController , UITextFieldDelegate, PWInterstitialDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Phunware.initialize(mainView: self.view)
         txtAccountID.delegate = self
         txtZoneID.delegate = self
         txtPublisherID.delegate = self

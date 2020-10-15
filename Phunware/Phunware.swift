@@ -11,8 +11,14 @@ fileprivate let baseUrl = "https://ssp-r.phunware.com/adserve"
 
 /// The class used to make requests against the Phunware API.
 @objc public class Phunware: NSObject {
+    public static var frequencyCappingManager: FrequencyCappingManager = FrequencyCappingManager()
+    
     public override init() {
         super.init()
+    }
+    
+    public static func initialize(mainView:UIView) {
+        UAString.init(view: mainView)
     }
     
     static var session = Session().urlSession
@@ -24,6 +30,9 @@ fileprivate let baseUrl = "https://ssp-r.phunware.com/adserve"
      - Parameter completionHandler: a callback block that you provide to handle the response. The block will be given a `Response` object.
      */
     public static func requestPlacements(with configs: [PlacementRequestConfig], completionHandler: @escaping (Response) -> Void) {
+        for config in configs{
+            config.freqCapData = Phunware.frequencyCappingManager.getData()
+        }
         let requestManager = RequestManager(session: session, baseUrl: baseUrl, configs: configs, completionHandler: completionHandler)
         requestManager.request()
     }
@@ -46,6 +55,7 @@ fileprivate let baseUrl = "https://ssp-r.phunware.com/adserve"
      - Parameter completionHandler: a callback block that you provide to handle the response. The block will be given a `Response` object.
      */
     public static func requestPlacement(with config: PlacementRequestConfig, completionHandler: @escaping (Response) -> Void) {
+        config.freqCapData = Phunware.frequencyCappingManager.getData()
         let requestManager = RequestManager(session: session, baseUrl: baseUrl, config: config, completionHandler: completionHandler)
         requestManager.request()
     }

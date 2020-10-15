@@ -11,6 +11,7 @@ import CoreTelephony
 import SystemConfiguration
 import CoreLocation
 import AdSupport
+import WebKit
 
 /// Configures the parameters used in requesting a `Placement`.
 @objc public class PlacementRequestConfig: NSObject {
@@ -70,7 +71,12 @@ import AdSupport
     public var customExtraRaw : String?
     public var customAdServeURL : String?
 
+    private let type: String = "json"
     
+    public var rct: String?
+    public var rcb: String?
+    
+    public var freqCapData: [FrequencyCappingData]?
     
     @objc public init(accountId: Int, zoneId: Int, width: Int, height: Int, personalizedAdsEnabled: Bool = false, keywords: [String] = [], click: String? = nil, customExtras: [AnyHashable: Any]?) {
         super.init()
@@ -85,7 +91,7 @@ import AdSupport
         getNetworkData()
         getDeviceData()
         getAppData()
-        self.userAgent = getUserAgent()
+        self.userAgent = UAString.userAgent
         getCustomEventData(customExtras)
     }
     
@@ -107,7 +113,6 @@ import AdSupport
         carrier = networkInfo.subscriberCellularProvider?.carrierName
         carrierCode = networkInfo.subscriberCellularProvider?.mobileNetworkCode
         networkClass = networkInfo.currentRadioAccessTechnology
-        userAgent = getUserAgent()
     }
     
     func getDeviceData(){
@@ -135,12 +140,6 @@ import AdSupport
         language = Locale.preferredLanguages[0]
     }
     
-    func getUserAgent() -> String? {
-        let webView = UIWebView();
-        webView.loadHTMLString("<html></html>", baseURL: nil)
-        return webView.stringByEvaluatingJavaScript(from: "navigator.userAgent")
-    }
-    
     func getCustomEventData(_ events : [AnyHashable: Any]?){
         if((events) != nil) {
             self.customExtras = events
@@ -165,6 +164,67 @@ import AdSupport
 
 
 public extension PlacementRequestConfig {
+    
+    var queryStringPOST: String {
+        var query = ""
+        if (customExtras != nil && customExtras!.count > 0) {
+            let jsonData = try? JSONSerialization.data(withJSONObject: customExtras as Any, options: [])
+            let jsonString = String(data: jsonData!, encoding: .utf8)
+            query += ";extra=\(jsonString as String?)"
+        }else if(customExtraRaw != nil){
+            query += ";extra=\(customExtraRaw!)"
+        }
+        let retQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return retQuery
+    }
+    
+    var jsonBody: Data? {
+        do{
+            let jsonObject: FrequencyCappingPOSTData = FrequencyCappingPOSTData()
+            jsonObject.ID = accountId
+            jsonObject.setID = zoneId
+            jsonObject.width = width
+            jsonObject.height = height
+            jsonObject.kw = keywords
+            jsonObject.click = click
+            jsonObject.aduid = advertisingId
+            jsonObject.dnt = doNotTrack
+            jsonObject.yob = yearOfBirth
+            jsonObject.age = age
+            jsonObject.gender = gender
+            jsonObject.coppa = coppa
+            jsonObject.carrier = carrier
+            jsonObject.carriercode = carrierCode
+            jsonObject.network = networkClass
+            jsonObject.carriercountry = carrierCountryIso
+            jsonObject.lat = latitude
+            jsonObject.long = longitude
+            jsonObject.dvmake = deviceManufacturer
+            jsonObject.dvmodel = deviceModel
+            jsonObject.dvtype = deviceType
+            jsonObject.os = osName
+            jsonObject.osv = osVersion
+            jsonObject.lang = language
+            jsonObject.sw = screenWidth
+            jsonObject.sh = screenHeight
+            jsonObject.spr = screenPixelDensity
+            jsonObject.spdi = screenDotsPerInch
+            jsonObject.ua = userAgent
+            jsonObject.appname = appName
+            jsonObject.appcode = appPackageName
+            jsonObject.appversion = appVersion
+            jsonObject.user_freq = freqCapData
+            jsonObject.rct = rct
+            jsonObject.rcb = rcb
+            
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(jsonObject)
+            return jsonData
+        }catch{
+            print("Phunware :: Error serializing JSON POST data")
+        }
+        return nil
+    }
     
     var queryString: String {
         var query = ";ID=\(accountId);setID=\(zoneId)"

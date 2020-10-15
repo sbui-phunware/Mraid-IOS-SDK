@@ -8,12 +8,13 @@
 
 import Foundation
 import UIKit
+import WebKit
 
-public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
+public class PWInterstitialView: UIViewController, WKUIDelegate, WKNavigationDelegate  {
     private var interstitial:PWInterstitial!
     public var delegate:PWInterstitialDelegate!
     public static let DEFAULT_CLOSE_TIMER:Int = 4
-    var webView:UIWebView!
+    var webView:WKWebView!
     var imageView:UIImageView!
     var bgView:UIView!
     var isReady:Bool = false
@@ -71,7 +72,7 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
             height: min(h, sh)
         )
         
-        webView = UIWebView(frame: frame)
+        webView = WKWebView(frame: frame)
         if(w > sw){
             let contentSize:CGSize = CGSize(width:w, height:h)
             let viewSize:CGSize = CGSize(width:sw, height:sh)
@@ -87,8 +88,9 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
         
         webView.scrollView.contentInset = UIEdgeInsets(top: -8.0, left: -8.0, bottom: 8, right: 8)
       
-        webView.delegate = self
-        webView.dataDetectorTypes = UIDataDetectorTypes.all
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
+        //webView.dataDetectorTypes = UIDataDetectorTypes.all
         webView.isOpaque = true
         webView.isUserInteractionEnabled = true
     }
@@ -212,7 +214,8 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
     
     @objc func onCloseClicked(sender: UIButton!){
         bgView?.removeFromSuperview()
-        webView?.delegate = nil
+        webView?.uiDelegate = nil
+        webView?.navigationDelegate = nil
         webView?.removeFromSuperview()
         webView = nil
         imageView?.removeFromSuperview()
@@ -222,35 +225,38 @@ public class PWInterstitialView: UIViewController, UIWebViewDelegate  {
         delegate.interstitialClosed(self.interstitial)
     }
     
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool{
-        let url = request.url
-        if(url != nil && url!.absoluteString != "about:blank"){
-            if(url!.absoluteString.range(of:"ssp-r.phunware.com") == nil){
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url!, options: [:], completionHandler: nil)
-                } else {
-                    // Fallback on earlier versions
-                    UIApplication.shared.openURL(url!)
-                }
-                self.placement?.recordClick()
-                return false
-            }else{
-                return true
-            }
-        }else{
-            return true
-        }
-    }
-    public func webViewDidStartLoad(_ webView: UIWebView){
+    public func webView(_ webView: WKWebView,
+     decidePolicyFor navigationAction: WKNavigationAction,
+     decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+         let url = navigationAction.request.url
+         if(url != nil && url!.absoluteString != "about:blank"){
+             if(url!.absoluteString.range(of:"ssp-r.phunware.com") == nil){
+                 if #available(iOS 10.0, *) {
+                     UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+                 } else {
+                     // Fallback on earlier versions
+                     UIApplication.shared.openURL(url!)
+                 }
+                 self.placement?.recordClick()
+                 decisionHandler(.cancel)
+             }else{
+                 decisionHandler(.allow)
+             }
+         }else{
+             decisionHandler(.allow)
+         }
+     }
+    
+    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         delegate.interstitialStartLoad(self.interstitial)
     }
     
-    public func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error){
         isReady = false
         delegate.interstitialFailedToLoad(self.interstitial)
     }
     
-    public func webViewDidFinishLoad(_ webView: UIWebView){
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if(!isReady){
             isReady = true
         }
