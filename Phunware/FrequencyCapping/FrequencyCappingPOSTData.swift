@@ -56,4 +56,5 @@ public class FrequencyCappingPOSTData : Codable {
     public var rcb: String?
 
     public var user_freq: [FrequencyCappingData]?
+    public var _abdk_json: String?
 }
