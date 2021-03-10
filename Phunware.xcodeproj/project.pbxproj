@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE3B73E62229A2C000F06A13 /* PWVASTVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3B73E52229A2C000F06A13 /* PWVASTVideo.swift */; };
+		BE420BA325F979D5000F7A12 /* iOSDevCenters+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE420BA225F979D5000F7A12 /* iOSDevCenters+GIF.swift */; };
 		BE69690B227B651500381273 /* PWVASTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE69690A227B651500381273 /* PWVASTParser.swift */; };
 		BE87D9442538D72A00039016 /* FrequencyCappingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9432538D72A00039016 /* FrequencyCappingData.swift */; };
 		BE87D9462538D74200039016 /* FrequencyCappingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87D9452538D74200039016 /* FrequencyCappingManager.swift */; };
@@ -62,6 +63,7 @@
 		BE3BC00B215EC1C00018BF74 /* PWInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWInterstitial.swift; sourceTree = "<group>"; };
 		BE41D8FE211122BF001B017F /* MRAIDUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDUtilities.swift; sourceTree = "<group>"; };
 		BE41D90021124E2C001B017F /* MRAIDBrowserWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRAIDBrowserWindow.swift; sourceTree = "<group>"; };
+		BE420BA225F979D5000F7A12 /* iOSDevCenters+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iOSDevCenters+GIF.swift"; sourceTree = "<group>"; };
 		BE67929A21431AB1009A1409 /* mraid.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = mraid.js; sourceTree = "<group>"; };
 		BE6792A1215169A7009A1409 /* PWErrorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PWErrorCode.swift; sourceTree = "<group>"; };
 		BE6792A3215176E6009A1409 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				BE6792A3215176E6009A1409 /* StringExtensions.swift */,
 				BEA40D3E256C3EA80001FD84 /* Data.swift */,
 				BEA40D41256C3EB80001FD84 /* Encoding.swift */,
+				BE420BA225F979D5000F7A12 /* iOSDevCenters+GIF.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				BE87D94A2538DB0200039016 /* UserAgent.swift in Sources */,
 				BE89B10321C86FEC00923CED /* MRAIDInterstitialDelegate.swift in Sources */,
 				BE69690B227B651500381273 /* PWVASTParser.swift in Sources */,
+				BE420BA325F979D5000F7A12 /* iOSDevCenters+GIF.swift in Sources */,
 				BE89B10821C86FEC00923CED /* PlacementResponseOperation.swift in Sources */,
 				BE87D9482538D77800039016 /* FrequencyCappingPOSTData.swift in Sources */,
 				BE89B10721C86FEC00923CED /* PlacementRequestOperation.swift in Sources */,
